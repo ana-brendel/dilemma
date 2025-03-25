@@ -1,0 +1,9 @@
+_build/
+**/*.d
+**/*.aux
+**/*.glob
+**/*.vo
+**/*.vos
+**/*.vok
+**/Makefile
+**/Makefile.conf

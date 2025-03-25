@@ -1,0 +1,393 @@
+Lemma Synthesis Execution Log and Results
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+Label: Initial State
+Assumptions: 
+ -- (select n x = (m, y))
+
+----------------------------------
+Goal: (length x = length y)
+
+
+------------------------------ GENERALIZED VARIABLES ------------------------------
+Time Elapsed From Start: 5.517 seconds
+
+gv0 : nat = (length x)
+gv1 : nat = (length y)
+
+
+------------------------------ GENERALIZATIONS ------------------------------
+  NOTE: The assumptions have been restricted to be only the necessary assumptions.
+Time Elapsed From Start: 41.074 seconds
+
+Label: Generalization #0
+Assumptions: 
+ -- (select n x = (m, y))
+
+----------------------------------
+Goal: (length x = length y)
+Case: Valid and Un-Generalized
+
+Label: Generalization #1
+Assumptions: 
+ -- (select n x = (m, y))
+ -- (length y = gv1)
+
+----------------------------------
+Goal: (length x = gv1)
+Case: Invalid and Generalized
+
+Label: Generalization #2
+Assumptions: 
+ -- (select n x = (m, y))
+ -- (length x = gv0)
+
+----------------------------------
+Goal: (gv0 = length y)
+Case: Invalid and Generalized
+
+
+
+------------------------------ SYNTHESIS PROBLEMS ------------------------------
+Time Elapsed From Start: 41.24 seconds
+
+ -- functions to consider -- 
+@eq : (forall A : Type, A -> A -> Prop)
+not : (Prop -> Prop)
+length : (forall A : Type, list A -> nat)
+app : (forall A : Type, list A -> list A -> list A)
+le : (nat -> nat -> Prop)
+lt : (nat -> nat -> Prop)
+In : (forall A : Type, A -> list A -> Prop)
+existsb : (forall A : Type, (A -> bool) -> list A -> bool)
+forallb : (forall A : Type, (A -> bool) -> list A -> bool)
+Forall : (forall A : Type, (A -> Prop) -> list A -> Prop)
+nodup : (forall A : Type, (forall x y : A, {x = y} + {x <> y}) -> list A -> list A)
+map : (forall A B : Type, (A -> B) -> list A -> list B)
+Permutation : (forall A : Type, list A -> list A -> Prop)
+sorted : (list nat -> Prop)
+is_a_sorting_algorithm : ((list nat -> list nat) -> Prop)
+select : (nat -> list nat -> nat * list nat)
+selsort : (list nat -> nat -> list nat)
+selection_sort : (list nat -> list nat)
+le_all : (nat -> list nat -> Prop)
+sorted_bool : (list nat -> bool)
+
+Label: 0 (0)
+Abducted Assumption: (select n x = (m, y))
+Positive Examples: 30
+Negative Examples: 500
+
+Label: 1 (1)
+Inferring Condition About Generalization
+Positive Examples: 42
+Negative Examples: 43
+
+Label: 2 (2)
+Inferring Condition About Generalization
+Positive Examples: 34
+Negative Examples: 37
+
+
+------------------------------ TERMS CONSIDERED IN SYNTHESIS ------------------------------
+Time Elapsed From Start: 41.555 seconds
+
+
+Label: 0 (0)
+(m <=* y), (m <=* x), (n <=* y), (n <=* x), (sorted y), (sorted x), (Permutation y y), (Permutation y x), (Permutation x y), (Permutation x x)
+(In m y), (In m x), (In n y), (In n x), (m < m), (m < n), (n < m), (n < n), (m <= m), (m <= n)
+(n <= m), (n <= n), (m = m), (m = n), (n = m), (n = n), (y = y), (y = x), (x = y), (x = x)
+(false = sorted_bool y), (false = sorted_bool x), (true = sorted_bool y), (true = sorted_bool x), (m <=* m :: y), (m <=* m :: x), (m <=* n :: y), (m <=* n :: x), (m <=* selection_sort y), (m <=* selection_sort x)
+(m <=* selsort y m), (m <=* selsort y n), (m <=* selsort x m), (m <=* selsort x n), (m <=* y ++ y), (m <=* y ++ x), (m <=* x ++ y), (m <=* x ++ x), (m <=* []), (n <=* m :: y)
+(n <=* m :: x), (n <=* n :: y), (n <=* n :: x), (n <=* selection_sort y), (n <=* selection_sort x), (n <=* selsort y m), (n <=* selsort y n), (n <=* selsort x m), (n <=* selsort x n), (n <=* y ++ y)
+(n <=* y ++ x), (n <=* x ++ y), (n <=* x ++ x), (n <=* []), (length y <=* y), (length y <=* x), (length y <=* m :: y), (length y <=* m :: x), (length y <=* n :: y), (length y <=* n :: x)
+(length y <=* selection_sort y), (length y <=* selection_sort x), (length y <=* selsort y m), (length y <=* selsort y n), (length y <=* selsort x m), (length y <=* selsort x n), (length y <=* y ++ y), (length y <=* y ++ x), (length y <=* x ++ y), (length y <=* x ++ x)
+(length y <=* []), (length x <=* y), (length x <=* x), (length x <=* m :: y), (length x <=* m :: x), (length x <=* n :: y), (length x <=* n :: x), (length x <=* selection_sort y), (length x <=* selection_sort x), (length x <=* selsort y m)
+(length x <=* selsort y n), (length x <=* selsort x m), (length x <=* selsort x n), (length x <=* y ++ y), (length x <=* y ++ x), (length x <=* x ++ y), (length x <=* x ++ x), (length x <=* []), (sorted (m :: y)), (sorted (m :: x))
+(sorted (n :: y)), (sorted (n :: x)), (sorted (selection_sort y)), (sorted (selection_sort x)), (sorted (selsort y m)), (sorted (selsort y n)), (sorted (selsort x m)), (sorted (selsort x n)), (sorted (y ++ y)), (sorted (y ++ x))
+(sorted (x ++ y)), (sorted (x ++ x)), (sorted []), (Permutation y (m :: y)), (Permutation y (m :: x)), (Permutation y (n :: y)), (Permutation y (n :: x)), (Permutation y (selection_sort y)), (Permutation y (selection_sort x)), (Permutation y (selsort y m))
+(Permutation y (selsort y n)), (Permutation y (selsort x m)), (Permutation y (selsort x n)), (Permutation y (y ++ y)), (Permutation y (y ++ x)), (Permutation y (x ++ y)), (Permutation y (x ++ x)), (Permutation y []), (Permutation x (m :: y)), (Permutation x (m :: x))
+(Permutation x (n :: y)), (Permutation x (n :: x)), (Permutation x (selection_sort y)), (Permutation x (selection_sort x)), (Permutation x (selsort y m)), (Permutation x (selsort y n)), (Permutation x (selsort x m)), (Permutation x (selsort x n)), (Permutation x (y ++ y)), (Permutation x (y ++ x))
+(Permutation x (x ++ y)), (Permutation x (x ++ x)), (Permutation x []), (Permutation (m :: y) y), (Permutation (m :: y) x), (Permutation (m :: y) (m :: x)), (Permutation (m :: y) (n :: y)), (Permutation (m :: y) (n :: x)), (Permutation (m :: y) (selection_sort y)), (Permutation (m :: y) (selection_sort x))
+(Permutation (m :: y) (selsort y m)), (Permutation (m :: y) (selsort y n)), (Permutation (m :: y) (selsort x m)), (Permutation (m :: y) (selsort x n)), (Permutation (m :: y) (y ++ y)), (Permutation (m :: y) (y ++ x)), (Permutation (m :: y) (x ++ y)), (Permutation (m :: y) (x ++ x)), (Permutation (m :: y) []), (Permutation (m :: x) y)
+(Permutation (m :: x) x), (Permutation (m :: x) (m :: y)), (Permutation (m :: x) (n :: y)), (Permutation (m :: x) (n :: x)), (Permutation (m :: x) (selection_sort y)), (Permutation (m :: x) (selection_sort x)), (Permutation (m :: x) (selsort y m)), (Permutation (m :: x) (selsort y n)), (Permutation (m :: x) (selsort x m)), (Permutation (m :: x) (selsort x n))
+(Permutation (m :: x) (y ++ y)), (Permutation (m :: x) (y ++ x)), (Permutation (m :: x) (x ++ y)), (Permutation (m :: x) (x ++ x)), (Permutation (m :: x) []), (Permutation (n :: y) y), (Permutation (n :: y) x), (Permutation (n :: y) (m :: y)), (Permutation (n :: y) (m :: x)), (Permutation (n :: y) (n :: x))
+(Permutation (n :: y) (selection_sort y)), (Permutation (n :: y) (selection_sort x)), (Permutation (n :: y) (selsort y m)), (Permutation (n :: y) (selsort y n)), (Permutation (n :: y) (selsort x m)), (Permutation (n :: y) (selsort x n)), (Permutation (n :: y) (y ++ y)), (Permutation (n :: y) (y ++ x)), (Permutation (n :: y) (x ++ y)), (Permutation (n :: y) (x ++ x))
+(Permutation (n :: y) []), (Permutation (n :: x) y), (Permutation (n :: x) x), (Permutation (n :: x) (m :: y)), (Permutation (n :: x) (m :: x)), (Permutation (n :: x) (n :: y)), (Permutation (n :: x) (selection_sort y)), (Permutation (n :: x) (selection_sort x)), (Permutation (n :: x) (selsort y m)), (Permutation (n :: x) (selsort y n))
+(Permutation (n :: x) (selsort x m)), (Permutation (n :: x) (selsort x n)), (Permutation (n :: x) (y ++ y)), (Permutation (n :: x) (y ++ x)), (Permutation (n :: x) (x ++ y)), (Permutation (n :: x) (x ++ x)), (Permutation (n :: x) []), (Permutation (selection_sort y) y), (Permutation (selection_sort y) x), (Permutation (selection_sort y) (m :: y))
+(Permutation (selection_sort y) (m :: x)), (Permutation (selection_sort y) (n :: y)), (Permutation (selection_sort y) (n :: x)), (Permutation (selection_sort y) (selection_sort x)), (Permutation (selection_sort y) (selsort y m)), (Permutation (selection_sort y) (selsort y n)), (Permutation (selection_sort y) (selsort x m)), (Permutation (selection_sort y) (selsort x n)), (Permutation (selection_sort y) (y ++ y)), (Permutation (selection_sort y) (y ++ x))
+(Permutation (selection_sort y) (x ++ y)), (Permutation (selection_sort y) (x ++ x)), (Permutation (selection_sort y) []), (Permutation (selection_sort x) y), (Permutation (selection_sort x) x), (Permutation (selection_sort x) (m :: y)), (Permutation (selection_sort x) (m :: x)), (Permutation (selection_sort x) (n :: y)), (Permutation (selection_sort x) (n :: x)), (Permutation (selection_sort x) (selection_sort y))
+(Permutation (selection_sort x) (selsort y m)), (Permutation (selection_sort x) (selsort y n)), (Permutation (selection_sort x) (selsort x m)), (Permutation (selection_sort x) (selsort x n)), (Permutation (selection_sort x) (y ++ y)), (Permutation (selection_sort x) (y ++ x)), (Permutation (selection_sort x) (x ++ y)), (Permutation (selection_sort x) (x ++ x)), (Permutation (selection_sort x) []), (Permutation (selsort y m) y)
+(Permutation (selsort y m) x), (Permutation (selsort y m) (m :: y)), (Permutation (selsort y m) (m :: x)), (Permutation (selsort y m) (n :: y)), (Permutation (selsort y m) (n :: x)), (Permutation (selsort y m) (selection_sort y)), (Permutation (selsort y m) (selection_sort x)), (Permutation (selsort y m) (selsort y n)), (Permutation (selsort y m) (selsort x m)), (Permutation (selsort y m) (selsort x n))
+(Permutation (selsort y m) (y ++ y)), (Permutation (selsort y m) (y ++ x)), (Permutation (selsort y m) (x ++ y)), (Permutation (selsort y m) (x ++ x)), (Permutation (selsort y m) []), (Permutation (selsort y n) y), (Permutation (selsort y n) x), (Permutation (selsort y n) (m :: y)), (Permutation (selsort y n) (m :: x)), (Permutation (selsort y n) (n :: y))
+(Permutation (selsort y n) (n :: x)), (Permutation (selsort y n) (selection_sort y)), (Permutation (selsort y n) (selection_sort x)), (Permutation (selsort y n) (selsort y m)), (Permutation (selsort y n) (selsort x m)), (Permutation (selsort y n) (selsort x n)), (Permutation (selsort y n) (y ++ y)), (Permutation (selsort y n) (y ++ x)), (Permutation (selsort y n) (x ++ y)), (Permutation (selsort y n) (x ++ x))
+(Permutation (selsort y n) []), (Permutation (selsort x m) y), (Permutation (selsort x m) x), (Permutation (selsort x m) (m :: y)), (Permutation (selsort x m) (m :: x)), (Permutation (selsort x m) (n :: y)), (Permutation (selsort x m) (n :: x)), (Permutation (selsort x m) (selection_sort y)), (Permutation (selsort x m) (selection_sort x)), (Permutation (selsort x m) (selsort y m))
+(Permutation (selsort x m) (selsort y n)), (Permutation (selsort x m) (selsort x n)), (Permutation (selsort x m) (y ++ y)), (Permutation (selsort x m) (y ++ x)), (Permutation (selsort x m) (x ++ y)), (Permutation (selsort x m) (x ++ x)), (Permutation (selsort x m) []), (Permutation (selsort x n) y), (Permutation (selsort x n) x), (Permutation (selsort x n) (m :: y))
+(Permutation (selsort x n) (m :: x)), (Permutation (selsort x n) (n :: y)), (Permutation (selsort x n) (n :: x)), (Permutation (selsort x n) (selection_sort y)), (Permutation (selsort x n) (selection_sort x)), (Permutation (selsort x n) (selsort y m)), (Permutation (selsort x n) (selsort y n)), (Permutation (selsort x n) (selsort x m)), (Permutation (selsort x n) (y ++ y)), (Permutation (selsort x n) (y ++ x))
+(Permutation (selsort x n) (x ++ y)), (Permutation (selsort x n) (x ++ x)), (Permutation (selsort x n) []), (Permutation (y ++ y) y), (Permutation (y ++ y) x), (Permutation (y ++ y) (m :: y)), (Permutation (y ++ y) (m :: x)), (Permutation (y ++ y) (n :: y)), (Permutation (y ++ y) (n :: x)), (Permutation (y ++ y) (selection_sort y))
+(Permutation (y ++ y) (selection_sort x)), (Permutation (y ++ y) (selsort y m)), (Permutation (y ++ y) (selsort y n)), (Permutation (y ++ y) (selsort x m)), (Permutation (y ++ y) (selsort x n)), (Permutation (y ++ y) (y ++ x)), (Permutation (y ++ y) (x ++ y)), (Permutation (y ++ y) (x ++ x)), (Permutation (y ++ y) []), (Permutation (y ++ x) y)
+(Permutation (y ++ x) x), (Permutation (y ++ x) (m :: y)), (Permutation (y ++ x) (m :: x)), (Permutation (y ++ x) (n :: y)), (Permutation (y ++ x) (n :: x)), (Permutation (y ++ x) (selection_sort y)), (Permutation (y ++ x) (selection_sort x)), (Permutation (y ++ x) (selsort y m)), (Permutation (y ++ x) (selsort y n)), (Permutation (y ++ x) (selsort x m))
+(Permutation (y ++ x) (selsort x n)), (Permutation (y ++ x) (y ++ y)), (Permutation (y ++ x) (x ++ y)), (Permutation (y ++ x) (x ++ x)), (Permutation (y ++ x) []), (Permutation (x ++ y) y), (Permutation (x ++ y) x), (Permutation (x ++ y) (m :: y)), (Permutation (x ++ y) (m :: x)), (Permutation (x ++ y) (n :: y))
+(Permutation (x ++ y) (n :: x)), (Permutation (x ++ y) (selection_sort y)), (Permutation (x ++ y) (selection_sort x)), (Permutation (x ++ y) (selsort y m)), (Permutation (x ++ y) (selsort y n)), (Permutation (x ++ y) (selsort x m)), (Permutation (x ++ y) (selsort x n)), (Permutation (x ++ y) (y ++ y)), (Permutation (x ++ y) (y ++ x)), (Permutation (x ++ y) (x ++ x))
+(Permutation (x ++ y) []), (Permutation (x ++ x) y), (Permutation (x ++ x) x), (Permutation (x ++ x) (m :: y)), (Permutation (x ++ x) (m :: x)), (Permutation (x ++ x) (n :: y)), (Permutation (x ++ x) (n :: x)), (Permutation (x ++ x) (selection_sort y)), (Permutation (x ++ x) (selection_sort x)), (Permutation (x ++ x) (selsort y m))
+(Permutation (x ++ x) (selsort y n)), (Permutation (x ++ x) (selsort x m)), (Permutation (x ++ x) (selsort x n)), (Permutation (x ++ x) (y ++ y)), (Permutation (x ++ x) (y ++ x)), (Permutation (x ++ x) (x ++ y)), (Permutation (x ++ x) []), (Permutation [] y), (Permutation [] x), (Permutation [] (m :: y))
+(Permutation [] (m :: x)), (Permutation [] (n :: y)), (Permutation [] (n :: x)), (Permutation [] (selection_sort y)), (Permutation [] (selection_sort x)), (Permutation [] (selsort y m)), (Permutation [] (selsort y n)), (Permutation [] (selsort x m)), (Permutation [] (selsort x n)), (Permutation [] (y ++ y))
+(Permutation [] (y ++ x)), (Permutation [] (x ++ y)), (Permutation [] (x ++ x)), (In m (m :: y)), (In m (m :: x)), (In m (n :: y)), (In m (n :: x)), (In m (selection_sort y)), (In m (selection_sort x)), (In m (selsort y m))
+(In m (selsort y n)), (In m (selsort x m)), (In m (selsort x n)), (In m (y ++ y)), (In m (y ++ x)), (In m (x ++ y)), (In m (x ++ x)), (In n (m :: y)), (In n (m :: x)), (In n (n :: y))
+(In n (n :: x)), (In n (selection_sort y)), (In n (selection_sort x)), (In n (selsort y m)), (In n (selsort y n)), (In n (selsort x m)), (In n (selsort x n)), (In n (y ++ y)), (In n (y ++ x)), (In n (x ++ y))
+(In n (x ++ x)), (In (length y) y), (In (length y) x), (In (length y) (m :: y)), (In (length y) (m :: x)), (In (length y) (n :: y)), (In (length y) (n :: x)), (In (length y) (selection_sort y)), (In (length y) (selection_sort x)), (In (length y) (selsort y m))
+(In (length y) (selsort y n)), (In (length y) (selsort x m)), (In (length y) (selsort x n)), (In (length y) (y ++ y)), (In (length y) (y ++ x)), (In (length y) (x ++ y)), (In (length y) (x ++ x)), (In (length x) y), (In (length x) x), (In (length x) (m :: y))
+(In (length x) (m :: x)), (In (length x) (n :: y)), (In (length x) (n :: x)), (In (length x) (selection_sort y)), (In (length x) (selection_sort x)), (In (length x) (selsort y m)), (In (length x) (selsort y n)), (In (length x) (selsort x m)), (In (length x) (selsort x n)), (In (length x) (y ++ y))
+(In (length x) (y ++ x)), (In (length x) (x ++ y)), (In (length x) (x ++ x)), (m < length y), (m < length x), (n < length y), (n < length x), (length y < m), (length y < n), (length y < length x)
+(length x < m), (length x < n), (length x < length y), (m <= length y), (m <= length x), (n <= length y), (n <= length x), (length y <= m), (length y <= n), (length y <= length x)
+(length x <= m), (length x <= n), (length x <= length y), (~ m <=* y), (~ m <=* x), (~ n <=* y), (~ n <=* x), (~ sorted y), (~ sorted x), (~ Permutation y y)
+(~ Permutation y x), (~ Permutation x y), (~ Permutation x x), (~ In m y), (~ In m x), (~ In n y), (~ In n x), (~ m < m), (~ m < n), (~ n < m)
+(~ n < n), (~ m <= m), (~ m <= n), (~ n <= m), (~ n <= n), (m <> m), (m <> n), (n <> m), (n <> n), (y <> y)
+(y <> x), (x <> y), (x <> x), (None = Some y), (None = Some x), (m :: y = y), (m :: y = x), (m :: y = selection_sort y), (m :: y = selection_sort x), (m :: y = selsort y m)
+(m :: y = selsort y n), (m :: y = selsort x m), (m :: y = selsort x n), (m :: y = y ++ y), (m :: y = y ++ x), (m :: y = x ++ y), (m :: y = x ++ x), (m :: y = []), (m :: x = y), (m :: x = x)
+(m :: x = selection_sort y), (m :: x = selection_sort x), (m :: x = selsort y m), (m :: x = selsort y n), (m :: x = selsort x m), (m :: x = selsort x n), (m :: x = y ++ y), (m :: x = y ++ x), (m :: x = x ++ y), (m :: x = x ++ x)
+(m :: x = []), (n :: y = y), (n :: y = x), (n :: y = selection_sort y), (n :: y = selection_sort x), (n :: y = selsort y m), (n :: y = selsort y n), (n :: y = selsort x m), (n :: y = selsort x n), (n :: y = y ++ y)
+(n :: y = y ++ x), (n :: y = x ++ y), (n :: y = x ++ x), (n :: y = []), (n :: x = y), (n :: x = x), (n :: x = selection_sort y), (n :: x = selection_sort x), (n :: x = selsort y m), (n :: x = selsort y n)
+(n :: x = selsort x m), (n :: x = selsort x n), (n :: x = y ++ y), (n :: x = y ++ x), (n :: x = x ++ y), (n :: x = x ++ x), (n :: x = []), (selection_sort y = y), (selection_sort y = x), (selection_sort y = y ++ y)
+(selection_sort y = y ++ x), (selection_sort y = x ++ y), (selection_sort y = x ++ x), (selection_sort x = y), (selection_sort x = x), (selection_sort x = y ++ y), (selection_sort x = y ++ x), (selection_sort x = x ++ y), (selection_sort x = x ++ x), (selsort y m = y)
+(selsort y m = x), (selsort y m = selection_sort y), (selsort y m = selection_sort x), (selsort y m = y ++ y), (selsort y m = y ++ x), (selsort y m = x ++ y), (selsort y m = x ++ x), (selsort y n = y), (selsort y n = x), (selsort y n = selection_sort y)
+(selsort y n = selection_sort x), (selsort y n = y ++ y), (selsort y n = y ++ x), (selsort y n = x ++ y), (selsort y n = x ++ x), (selsort x m = y), (selsort x m = x), (selsort x m = selection_sort y), (selsort x m = selection_sort x), (selsort x m = y ++ y)
+(selsort x m = y ++ x), (selsort x m = x ++ y), (selsort x m = x ++ x), (selsort x n = y), (selsort x n = x), (selsort x n = selection_sort y), (selsort x n = selection_sort x), (selsort x n = y ++ y), (selsort x n = y ++ x), (selsort x n = x ++ y)
+(selsort x n = x ++ x), (y ++ y = y), (y ++ y = x), (y ++ x = y), (y ++ x = x), (x ++ y = y), (x ++ y = x), (x ++ x = y), (x ++ x = x), ([] = y)
+([] = x), ([] = selection_sort y), ([] = selection_sort x), ([] = selsort y m), ([] = selsort y n), ([] = selsort x m), ([] = selsort x n), ([] = y ++ y), ([] = y ++ x), ([] = x ++ y)
+([] = x ++ x), (None = Some m), (None = Some n), ((m, y) = select m y), ((m, y) = select m x), ((m, y) = select n y), ((m, y) = select n x), ((m, x) = select m y), ((m, x) = select m x), ((m, x) = select n y)
+((m, x) = select n x), ((n, y) = select m y), ((n, y) = select m x), ((n, y) = select n y), ((n, y) = select n x), ((n, x) = select m y), ((n, x) = select m x), ((n, x) = select n y), ((n, x) = select n x), (length y = m)
+(length y = n), (length x = m), (length x = n)
+
+Label: 1 (1)
+(m <=* y), (m <=* x), (n <=* y), (n <=* x), (gv1 <=* y), (gv1 <=* x), (sorted y), (sorted x), (Permutation y y), (Permutation y x)
+(Permutation x y), (Permutation x x), (In m y), (In m x), (In n y), (In n x), (In gv1 y), (In gv1 x), (m < m), (m < n)
+(m < gv1), (n < m), (n < n), (n < gv1), (gv1 < m), (gv1 < n), (gv1 < gv1), (m <= m), (m <= n), (m <= gv1)
+(n <= m), (n <= n), (n <= gv1), (gv1 <= m), (gv1 <= n), (gv1 <= gv1), (m = m), (m = n), (m = gv1), (n = m)
+(n = n), (n = gv1), (gv1 = m), (gv1 = n), (gv1 = gv1), (y = y), (y = x), (x = y), (x = x), (false = sorted_bool y)
+(false = sorted_bool x), (true = sorted_bool y), (true = sorted_bool x), (m <=* m :: y), (m <=* m :: x), (m <=* n :: y), (m <=* n :: x), (m <=* gv1 :: y), (m <=* gv1 :: x), (m <=* selection_sort y)
+(m <=* selection_sort x), (m <=* selsort y m), (m <=* selsort y n), (m <=* selsort y gv1), (m <=* selsort x m), (m <=* selsort x n), (m <=* selsort x gv1), (m <=* y ++ y), (m <=* y ++ x), (m <=* x ++ y)
+(m <=* x ++ x), (m <=* []), (n <=* m :: y), (n <=* m :: x), (n <=* n :: y), (n <=* n :: x), (n <=* gv1 :: y), (n <=* gv1 :: x), (n <=* selection_sort y), (n <=* selection_sort x)
+(n <=* selsort y m), (n <=* selsort y n), (n <=* selsort y gv1), (n <=* selsort x m), (n <=* selsort x n), (n <=* selsort x gv1), (n <=* y ++ y), (n <=* y ++ x), (n <=* x ++ y), (n <=* x ++ x)
+(n <=* []), (gv1 <=* m :: y), (gv1 <=* m :: x), (gv1 <=* n :: y), (gv1 <=* n :: x), (gv1 <=* gv1 :: y), (gv1 <=* gv1 :: x), (gv1 <=* selection_sort y), (gv1 <=* selection_sort x), (gv1 <=* selsort y m)
+(gv1 <=* selsort y n), (gv1 <=* selsort y gv1), (gv1 <=* selsort x m), (gv1 <=* selsort x n), (gv1 <=* selsort x gv1), (gv1 <=* y ++ y), (gv1 <=* y ++ x), (gv1 <=* x ++ y), (gv1 <=* x ++ x), (gv1 <=* [])
+(length y <=* y), (length y <=* x), (length y <=* m :: y), (length y <=* m :: x), (length y <=* n :: y), (length y <=* n :: x), (length y <=* gv1 :: y), (length y <=* gv1 :: x), (length y <=* selection_sort y), (length y <=* selection_sort x)
+(length y <=* selsort y m), (length y <=* selsort y n), (length y <=* selsort y gv1), (length y <=* selsort x m), (length y <=* selsort x n), (length y <=* selsort x gv1), (length y <=* y ++ y), (length y <=* y ++ x), (length y <=* x ++ y), (length y <=* x ++ x)
+(length y <=* []), (length x <=* y), (length x <=* x), (length x <=* m :: y), (length x <=* m :: x), (length x <=* n :: y), (length x <=* n :: x), (length x <=* gv1 :: y), (length x <=* gv1 :: x), (length x <=* selection_sort y)
+(length x <=* selection_sort x), (length x <=* selsort y m), (length x <=* selsort y n), (length x <=* selsort y gv1), (length x <=* selsort x m), (length x <=* selsort x n), (length x <=* selsort x gv1), (length x <=* y ++ y), (length x <=* y ++ x), (length x <=* x ++ y)
+(length x <=* x ++ x), (length x <=* []), (sorted (m :: y)), (sorted (m :: x)), (sorted (n :: y)), (sorted (n :: x)), (sorted (gv1 :: y)), (sorted (gv1 :: x)), (sorted (selection_sort y)), (sorted (selection_sort x))
+(sorted (selsort y m)), (sorted (selsort y n)), (sorted (selsort y gv1)), (sorted (selsort x m)), (sorted (selsort x n)), (sorted (selsort x gv1)), (sorted (y ++ y)), (sorted (y ++ x)), (sorted (x ++ y)), (sorted (x ++ x))
+(sorted []), (Permutation y (m :: y)), (Permutation y (m :: x)), (Permutation y (n :: y)), (Permutation y (n :: x)), (Permutation y (gv1 :: y)), (Permutation y (gv1 :: x)), (Permutation y (selection_sort y)), (Permutation y (selection_sort x)), (Permutation y (selsort y m))
+(Permutation y (selsort y n)), (Permutation y (selsort y gv1)), (Permutation y (selsort x m)), (Permutation y (selsort x n)), (Permutation y (selsort x gv1)), (Permutation y (y ++ y)), (Permutation y (y ++ x)), (Permutation y (x ++ y)), (Permutation y (x ++ x)), (Permutation y [])
+(Permutation x (m :: y)), (Permutation x (m :: x)), (Permutation x (n :: y)), (Permutation x (n :: x)), (Permutation x (gv1 :: y)), (Permutation x (gv1 :: x)), (Permutation x (selection_sort y)), (Permutation x (selection_sort x)), (Permutation x (selsort y m)), (Permutation x (selsort y n))
+(Permutation x (selsort y gv1)), (Permutation x (selsort x m)), (Permutation x (selsort x n)), (Permutation x (selsort x gv1)), (Permutation x (y ++ y)), (Permutation x (y ++ x)), (Permutation x (x ++ y)), (Permutation x (x ++ x)), (Permutation x []), (Permutation (m :: y) y)
+(Permutation (m :: y) x), (Permutation (m :: y) (m :: x)), (Permutation (m :: y) (n :: y)), (Permutation (m :: y) (n :: x)), (Permutation (m :: y) (gv1 :: y)), (Permutation (m :: y) (gv1 :: x)), (Permutation (m :: y) (selection_sort y)), (Permutation (m :: y) (selection_sort x)), (Permutation (m :: y) (selsort y m)), (Permutation (m :: y) (selsort y n))
+(Permutation (m :: y) (selsort y gv1)), (Permutation (m :: y) (selsort x m)), (Permutation (m :: y) (selsort x n)), (Permutation (m :: y) (selsort x gv1)), (Permutation (m :: y) (y ++ y)), (Permutation (m :: y) (y ++ x)), (Permutation (m :: y) (x ++ y)), (Permutation (m :: y) (x ++ x)), (Permutation (m :: y) []), (Permutation (m :: x) y)
+(Permutation (m :: x) x), (Permutation (m :: x) (m :: y)), (Permutation (m :: x) (n :: y)), (Permutation (m :: x) (n :: x)), (Permutation (m :: x) (gv1 :: y)), (Permutation (m :: x) (gv1 :: x)), (Permutation (m :: x) (selection_sort y)), (Permutation (m :: x) (selection_sort x)), (Permutation (m :: x) (selsort y m)), (Permutation (m :: x) (selsort y n))
+(Permutation (m :: x) (selsort y gv1)), (Permutation (m :: x) (selsort x m)), (Permutation (m :: x) (selsort x n)), (Permutation (m :: x) (selsort x gv1)), (Permutation (m :: x) (y ++ y)), (Permutation (m :: x) (y ++ x)), (Permutation (m :: x) (x ++ y)), (Permutation (m :: x) (x ++ x)), (Permutation (m :: x) []), (Permutation (n :: y) y)
+(Permutation (n :: y) x), (Permutation (n :: y) (m :: y)), (Permutation (n :: y) (m :: x)), (Permutation (n :: y) (n :: x)), (Permutation (n :: y) (gv1 :: y)), (Permutation (n :: y) (gv1 :: x)), (Permutation (n :: y) (selection_sort y)), (Permutation (n :: y) (selection_sort x)), (Permutation (n :: y) (selsort y m)), (Permutation (n :: y) (selsort y n))
+(Permutation (n :: y) (selsort y gv1)), (Permutation (n :: y) (selsort x m)), (Permutation (n :: y) (selsort x n)), (Permutation (n :: y) (selsort x gv1)), (Permutation (n :: y) (y ++ y)), (Permutation (n :: y) (y ++ x)), (Permutation (n :: y) (x ++ y)), (Permutation (n :: y) (x ++ x)), (Permutation (n :: y) []), (Permutation (n :: x) y)
+(Permutation (n :: x) x), (Permutation (n :: x) (m :: y)), (Permutation (n :: x) (m :: x)), (Permutation (n :: x) (n :: y)), (Permutation (n :: x) (gv1 :: y)), (Permutation (n :: x) (gv1 :: x)), (Permutation (n :: x) (selection_sort y)), (Permutation (n :: x) (selection_sort x)), (Permutation (n :: x) (selsort y m)), (Permutation (n :: x) (selsort y n))
+(Permutation (n :: x) (selsort y gv1)), (Permutation (n :: x) (selsort x m)), (Permutation (n :: x) (selsort x n)), (Permutation (n :: x) (selsort x gv1)), (Permutation (n :: x) (y ++ y)), (Permutation (n :: x) (y ++ x)), (Permutation (n :: x) (x ++ y)), (Permutation (n :: x) (x ++ x)), (Permutation (n :: x) []), (Permutation (gv1 :: y) y)
+(Permutation (gv1 :: y) x), (Permutation (gv1 :: y) (m :: y)), (Permutation (gv1 :: y) (m :: x)), (Permutation (gv1 :: y) (n :: y)), (Permutation (gv1 :: y) (n :: x)), (Permutation (gv1 :: y) (gv1 :: x)), (Permutation (gv1 :: y) (selection_sort y)), (Permutation (gv1 :: y) (selection_sort x)), (Permutation (gv1 :: y) (selsort y m)), (Permutation (gv1 :: y) (selsort y n))
+(Permutation (gv1 :: y) (selsort y gv1)), (Permutation (gv1 :: y) (selsort x m)), (Permutation (gv1 :: y) (selsort x n)), (Permutation (gv1 :: y) (selsort x gv1)), (Permutation (gv1 :: y) (y ++ y)), (Permutation (gv1 :: y) (y ++ x)), (Permutation (gv1 :: y) (x ++ y)), (Permutation (gv1 :: y) (x ++ x)), (Permutation (gv1 :: y) []), (Permutation (gv1 :: x) y)
+(Permutation (gv1 :: x) x), (Permutation (gv1 :: x) (m :: y)), (Permutation (gv1 :: x) (m :: x)), (Permutation (gv1 :: x) (n :: y)), (Permutation (gv1 :: x) (n :: x)), (Permutation (gv1 :: x) (gv1 :: y)), (Permutation (gv1 :: x) (selection_sort y)), (Permutation (gv1 :: x) (selection_sort x)), (Permutation (gv1 :: x) (selsort y m)), (Permutation (gv1 :: x) (selsort y n))
+(Permutation (gv1 :: x) (selsort y gv1)), (Permutation (gv1 :: x) (selsort x m)), (Permutation (gv1 :: x) (selsort x n)), (Permutation (gv1 :: x) (selsort x gv1)), (Permutation (gv1 :: x) (y ++ y)), (Permutation (gv1 :: x) (y ++ x)), (Permutation (gv1 :: x) (x ++ y)), (Permutation (gv1 :: x) (x ++ x)), (Permutation (gv1 :: x) []), (Permutation (selection_sort y) y)
+(Permutation (selection_sort y) x), (Permutation (selection_sort y) (m :: y)), (Permutation (selection_sort y) (m :: x)), (Permutation (selection_sort y) (n :: y)), (Permutation (selection_sort y) (n :: x)), (Permutation (selection_sort y) (gv1 :: y)), (Permutation (selection_sort y) (gv1 :: x)), (Permutation (selection_sort y) (selection_sort x)), (Permutation (selection_sort y) (selsort y m)), (Permutation (selection_sort y) (selsort y n))
+(Permutation (selection_sort y) (selsort y gv1)), (Permutation (selection_sort y) (selsort x m)), (Permutation (selection_sort y) (selsort x n)), (Permutation (selection_sort y) (selsort x gv1)), (Permutation (selection_sort y) (y ++ y)), (Permutation (selection_sort y) (y ++ x)), (Permutation (selection_sort y) (x ++ y)), (Permutation (selection_sort y) (x ++ x)), (Permutation (selection_sort y) []), (Permutation (selection_sort x) y)
+(Permutation (selection_sort x) x), (Permutation (selection_sort x) (m :: y)), (Permutation (selection_sort x) (m :: x)), (Permutation (selection_sort x) (n :: y)), (Permutation (selection_sort x) (n :: x)), (Permutation (selection_sort x) (gv1 :: y)), (Permutation (selection_sort x) (gv1 :: x)), (Permutation (selection_sort x) (selection_sort y)), (Permutation (selection_sort x) (selsort y m)), (Permutation (selection_sort x) (selsort y n))
+(Permutation (selection_sort x) (selsort y gv1)), (Permutation (selection_sort x) (selsort x m)), (Permutation (selection_sort x) (selsort x n)), (Permutation (selection_sort x) (selsort x gv1)), (Permutation (selection_sort x) (y ++ y)), (Permutation (selection_sort x) (y ++ x)), (Permutation (selection_sort x) (x ++ y)), (Permutation (selection_sort x) (x ++ x)), (Permutation (selection_sort x) []), (Permutation (selsort y m) y)
+(Permutation (selsort y m) x), (Permutation (selsort y m) (m :: y)), (Permutation (selsort y m) (m :: x)), (Permutation (selsort y m) (n :: y)), (Permutation (selsort y m) (n :: x)), (Permutation (selsort y m) (gv1 :: y)), (Permutation (selsort y m) (gv1 :: x)), (Permutation (selsort y m) (selection_sort y)), (Permutation (selsort y m) (selection_sort x)), (Permutation (selsort y m) (selsort y n))
+(Permutation (selsort y m) (selsort y gv1)), (Permutation (selsort y m) (selsort x m)), (Permutation (selsort y m) (selsort x n)), (Permutation (selsort y m) (selsort x gv1)), (Permutation (selsort y m) (y ++ y)), (Permutation (selsort y m) (y ++ x)), (Permutation (selsort y m) (x ++ y)), (Permutation (selsort y m) (x ++ x)), (Permutation (selsort y m) []), (Permutation (selsort y n) y)
+(Permutation (selsort y n) x), (Permutation (selsort y n) (m :: y)), (Permutation (selsort y n) (m :: x)), (Permutation (selsort y n) (n :: y)), (Permutation (selsort y n) (n :: x)), (Permutation (selsort y n) (gv1 :: y)), (Permutation (selsort y n) (gv1 :: x)), (Permutation (selsort y n) (selection_sort y)), (Permutation (selsort y n) (selection_sort x)), (Permutation (selsort y n) (selsort y m))
+(Permutation (selsort y n) (selsort y gv1)), (Permutation (selsort y n) (selsort x m)), (Permutation (selsort y n) (selsort x n)), (Permutation (selsort y n) (selsort x gv1)), (Permutation (selsort y n) (y ++ y)), (Permutation (selsort y n) (y ++ x)), (Permutation (selsort y n) (x ++ y)), (Permutation (selsort y n) (x ++ x)), (Permutation (selsort y n) []), (Permutation (selsort y gv1) y)
+(Permutation (selsort y gv1) x), (Permutation (selsort y gv1) (m :: y)), (Permutation (selsort y gv1) (m :: x)), (Permutation (selsort y gv1) (n :: y)), (Permutation (selsort y gv1) (n :: x)), (Permutation (selsort y gv1) (gv1 :: y)), (Permutation (selsort y gv1) (gv1 :: x)), (Permutation (selsort y gv1) (selection_sort y)), (Permutation (selsort y gv1) (selection_sort x)), (Permutation (selsort y gv1) (selsort y m))
+(Permutation (selsort y gv1) (selsort y n)), (Permutation (selsort y gv1) (selsort x m)), (Permutation (selsort y gv1) (selsort x n)), (Permutation (selsort y gv1) (selsort x gv1)), (Permutation (selsort y gv1) (y ++ y)), (Permutation (selsort y gv1) (y ++ x)), (Permutation (selsort y gv1) (x ++ y)), (Permutation (selsort y gv1) (x ++ x)), (Permutation (selsort y gv1) []), (Permutation (selsort x m) y)
+(Permutation (selsort x m) x), (Permutation (selsort x m) (m :: y)), (Permutation (selsort x m) (m :: x)), (Permutation (selsort x m) (n :: y)), (Permutation (selsort x m) (n :: x)), (Permutation (selsort x m) (gv1 :: y)), (Permutation (selsort x m) (gv1 :: x)), (Permutation (selsort x m) (selection_sort y)), (Permutation (selsort x m) (selection_sort x)), (Permutation (selsort x m) (selsort y m))
+(Permutation (selsort x m) (selsort y n)), (Permutation (selsort x m) (selsort y gv1)), (Permutation (selsort x m) (selsort x n)), (Permutation (selsort x m) (selsort x gv1)), (Permutation (selsort x m) (y ++ y)), (Permutation (selsort x m) (y ++ x)), (Permutation (selsort x m) (x ++ y)), (Permutation (selsort x m) (x ++ x)), (Permutation (selsort x m) []), (Permutation (selsort x n) y)
+(Permutation (selsort x n) x), (Permutation (selsort x n) (m :: y)), (Permutation (selsort x n) (m :: x)), (Permutation (selsort x n) (n :: y)), (Permutation (selsort x n) (n :: x)), (Permutation (selsort x n) (gv1 :: y)), (Permutation (selsort x n) (gv1 :: x)), (Permutation (selsort x n) (selection_sort y)), (Permutation (selsort x n) (selection_sort x)), (Permutation (selsort x n) (selsort y m))
+(Permutation (selsort x n) (selsort y n)), (Permutation (selsort x n) (selsort y gv1)), (Permutation (selsort x n) (selsort x m)), (Permutation (selsort x n) (selsort x gv1)), (Permutation (selsort x n) (y ++ y)), (Permutation (selsort x n) (y ++ x)), (Permutation (selsort x n) (x ++ y)), (Permutation (selsort x n) (x ++ x)), (Permutation (selsort x n) []), (Permutation (selsort x gv1) y)
+(Permutation (selsort x gv1) x), (Permutation (selsort x gv1) (m :: y)), (Permutation (selsort x gv1) (m :: x)), (Permutation (selsort x gv1) (n :: y)), (Permutation (selsort x gv1) (n :: x)), (Permutation (selsort x gv1) (gv1 :: y)), (Permutation (selsort x gv1) (gv1 :: x)), (Permutation (selsort x gv1) (selection_sort y)), (Permutation (selsort x gv1) (selection_sort x)), (Permutation (selsort x gv1) (selsort y m))
+(Permutation (selsort x gv1) (selsort y n)), (Permutation (selsort x gv1) (selsort y gv1)), (Permutation (selsort x gv1) (selsort x m)), (Permutation (selsort x gv1) (selsort x n)), (Permutation (selsort x gv1) (y ++ y)), (Permutation (selsort x gv1) (y ++ x)), (Permutation (selsort x gv1) (x ++ y)), (Permutation (selsort x gv1) (x ++ x)), (Permutation (selsort x gv1) []), (Permutation (y ++ y) y)
+(Permutation (y ++ y) x), (Permutation (y ++ y) (m :: y)), (Permutation (y ++ y) (m :: x)), (Permutation (y ++ y) (n :: y)), (Permutation (y ++ y) (n :: x)), (Permutation (y ++ y) (gv1 :: y)), (Permutation (y ++ y) (gv1 :: x)), (Permutation (y ++ y) (selection_sort y)), (Permutation (y ++ y) (selection_sort x)), (Permutation (y ++ y) (selsort y m))
+(Permutation (y ++ y) (selsort y n)), (Permutation (y ++ y) (selsort y gv1)), (Permutation (y ++ y) (selsort x m)), (Permutation (y ++ y) (selsort x n)), (Permutation (y ++ y) (selsort x gv1)), (Permutation (y ++ y) (y ++ x)), (Permutation (y ++ y) (x ++ y)), (Permutation (y ++ y) (x ++ x)), (Permutation (y ++ y) []), (Permutation (y ++ x) y)
+(Permutation (y ++ x) x), (Permutation (y ++ x) (m :: y)), (Permutation (y ++ x) (m :: x)), (Permutation (y ++ x) (n :: y)), (Permutation (y ++ x) (n :: x)), (Permutation (y ++ x) (gv1 :: y)), (Permutation (y ++ x) (gv1 :: x)), (Permutation (y ++ x) (selection_sort y)), (Permutation (y ++ x) (selection_sort x)), (Permutation (y ++ x) (selsort y m))
+(Permutation (y ++ x) (selsort y n)), (Permutation (y ++ x) (selsort y gv1)), (Permutation (y ++ x) (selsort x m)), (Permutation (y ++ x) (selsort x n)), (Permutation (y ++ x) (selsort x gv1)), (Permutation (y ++ x) (y ++ y)), (Permutation (y ++ x) (x ++ y)), (Permutation (y ++ x) (x ++ x)), (Permutation (y ++ x) []), (Permutation (x ++ y) y)
+(Permutation (x ++ y) x), (Permutation (x ++ y) (m :: y)), (Permutation (x ++ y) (m :: x)), (Permutation (x ++ y) (n :: y)), (Permutation (x ++ y) (n :: x)), (Permutation (x ++ y) (gv1 :: y)), (Permutation (x ++ y) (gv1 :: x)), (Permutation (x ++ y) (selection_sort y)), (Permutation (x ++ y) (selection_sort x)), (Permutation (x ++ y) (selsort y m))
+(Permutation (x ++ y) (selsort y n)), (Permutation (x ++ y) (selsort y gv1)), (Permutation (x ++ y) (selsort x m)), (Permutation (x ++ y) (selsort x n)), (Permutation (x ++ y) (selsort x gv1)), (Permutation (x ++ y) (y ++ y)), (Permutation (x ++ y) (y ++ x)), (Permutation (x ++ y) (x ++ x)), (Permutation (x ++ y) []), (Permutation (x ++ x) y)
+(Permutation (x ++ x) x), (Permutation (x ++ x) (m :: y)), (Permutation (x ++ x) (m :: x)), (Permutation (x ++ x) (n :: y)), (Permutation (x ++ x) (n :: x)), (Permutation (x ++ x) (gv1 :: y)), (Permutation (x ++ x) (gv1 :: x)), (Permutation (x ++ x) (selection_sort y)), (Permutation (x ++ x) (selection_sort x)), (Permutation (x ++ x) (selsort y m))
+(Permutation (x ++ x) (selsort y n)), (Permutation (x ++ x) (selsort y gv1)), (Permutation (x ++ x) (selsort x m)), (Permutation (x ++ x) (selsort x n)), (Permutation (x ++ x) (selsort x gv1)), (Permutation (x ++ x) (y ++ y)), (Permutation (x ++ x) (y ++ x)), (Permutation (x ++ x) (x ++ y)), (Permutation (x ++ x) []), (Permutation [] y)
+(Permutation [] x), (Permutation [] (m :: y)), (Permutation [] (m :: x)), (Permutation [] (n :: y)), (Permutation [] (n :: x)), (Permutation [] (gv1 :: y)), (Permutation [] (gv1 :: x)), (Permutation [] (selection_sort y)), (Permutation [] (selection_sort x)), (Permutation [] (selsort y m))
+(Permutation [] (selsort y n)), (Permutation [] (selsort y gv1)), (Permutation [] (selsort x m)), (Permutation [] (selsort x n)), (Permutation [] (selsort x gv1)), (Permutation [] (y ++ y)), (Permutation [] (y ++ x)), (Permutation [] (x ++ y)), (Permutation [] (x ++ x)), (In m (m :: y))
+(In m (m :: x)), (In m (n :: y)), (In m (n :: x)), (In m (gv1 :: y)), (In m (gv1 :: x)), (In m (selection_sort y)), (In m (selection_sort x)), (In m (selsort y m)), (In m (selsort y n)), (In m (selsort y gv1))
+(In m (selsort x m)), (In m (selsort x n)), (In m (selsort x gv1)), (In m (y ++ y)), (In m (y ++ x)), (In m (x ++ y)), (In m (x ++ x)), (In n (m :: y)), (In n (m :: x)), (In n (n :: y))
+(In n (n :: x)), (In n (gv1 :: y)), (In n (gv1 :: x)), (In n (selection_sort y)), (In n (selection_sort x)), (In n (selsort y m)), (In n (selsort y n)), (In n (selsort y gv1)), (In n (selsort x m)), (In n (selsort x n))
+(In n (selsort x gv1)), (In n (y ++ y)), (In n (y ++ x)), (In n (x ++ y)), (In n (x ++ x)), (In gv1 (m :: y)), (In gv1 (m :: x)), (In gv1 (n :: y)), (In gv1 (n :: x)), (In gv1 (gv1 :: y))
+(In gv1 (gv1 :: x)), (In gv1 (selection_sort y)), (In gv1 (selection_sort x)), (In gv1 (selsort y m)), (In gv1 (selsort y n)), (In gv1 (selsort y gv1)), (In gv1 (selsort x m)), (In gv1 (selsort x n)), (In gv1 (selsort x gv1)), (In gv1 (y ++ y))
+(In gv1 (y ++ x)), (In gv1 (x ++ y)), (In gv1 (x ++ x)), (In (length y) y), (In (length y) x), (In (length y) (m :: y)), (In (length y) (m :: x)), (In (length y) (n :: y)), (In (length y) (n :: x)), (In (length y) (gv1 :: y))
+(In (length y) (gv1 :: x)), (In (length y) (selection_sort y)), (In (length y) (selection_sort x)), (In (length y) (selsort y m)), (In (length y) (selsort y n)), (In (length y) (selsort y gv1)), (In (length y) (selsort x m)), (In (length y) (selsort x n)), (In (length y) (selsort x gv1)), (In (length y) (y ++ y))
+(In (length y) (y ++ x)), (In (length y) (x ++ y)), (In (length y) (x ++ x)), (In (length x) y), (In (length x) x), (In (length x) (m :: y)), (In (length x) (m :: x)), (In (length x) (n :: y)), (In (length x) (n :: x)), (In (length x) (gv1 :: y))
+(In (length x) (gv1 :: x)), (In (length x) (selection_sort y)), (In (length x) (selection_sort x)), (In (length x) (selsort y m)), (In (length x) (selsort y n)), (In (length x) (selsort y gv1)), (In (length x) (selsort x m)), (In (length x) (selsort x n)), (In (length x) (selsort x gv1)), (In (length x) (y ++ y))
+(In (length x) (y ++ x)), (In (length x) (x ++ y)), (In (length x) (x ++ x)), (m < length y), (m < length x), (n < length y), (n < length x), (gv1 < length y), (gv1 < length x), (length y < m)
+(length y < n), (length y < gv1), (length y < length x), (length x < m), (length x < n), (length x < gv1), (length x < length y), (m <= length y), (m <= length x), (n <= length y)
+(n <= length x), (gv1 <= length y), (gv1 <= length x), (length y <= m), (length y <= n), (length y <= gv1), (length y <= length x), (length x <= m), (length x <= n), (length x <= gv1)
+(length x <= length y), (~ m <=* y), (~ m <=* x), (~ n <=* y), (~ n <=* x), (~ gv1 <=* y), (~ gv1 <=* x), (~ sorted y), (~ sorted x), (~ Permutation y y)
+(~ Permutation y x), (~ Permutation x y), (~ Permutation x x), (~ In m y), (~ In m x), (~ In n y), (~ In n x), (~ In gv1 y), (~ In gv1 x), (~ m < m)
+(~ m < n), (~ m < gv1), (~ n < m), (~ n < n), (~ n < gv1), (~ gv1 < m), (~ gv1 < n), (~ gv1 < gv1), (~ m <= m), (~ m <= n)
+(~ m <= gv1), (~ n <= m), (~ n <= n), (~ n <= gv1), (~ gv1 <= m), (~ gv1 <= n), (~ gv1 <= gv1), (m <> m), (m <> n), (m <> gv1)
+(n <> m), (n <> n), (n <> gv1), (gv1 <> m), (gv1 <> n), (gv1 <> gv1), (y <> y), (y <> x), (x <> y), (x <> x)
+(None = Some y), (None = Some x), (m :: y = y), (m :: y = x), (m :: y = selection_sort y), (m :: y = selection_sort x), (m :: y = selsort y m), (m :: y = selsort y n), (m :: y = selsort y gv1), (m :: y = selsort x m)
+(m :: y = selsort x n), (m :: y = selsort x gv1), (m :: y = y ++ y), (m :: y = y ++ x), (m :: y = x ++ y), (m :: y = x ++ x), (m :: y = []), (m :: x = y), (m :: x = x), (m :: x = selection_sort y)
+(m :: x = selection_sort x), (m :: x = selsort y m), (m :: x = selsort y n), (m :: x = selsort y gv1), (m :: x = selsort x m), (m :: x = selsort x n), (m :: x = selsort x gv1), (m :: x = y ++ y), (m :: x = y ++ x), (m :: x = x ++ y)
+(m :: x = x ++ x), (m :: x = []), (n :: y = y), (n :: y = x), (n :: y = selection_sort y), (n :: y = selection_sort x), (n :: y = selsort y m), (n :: y = selsort y n), (n :: y = selsort y gv1), (n :: y = selsort x m)
+(n :: y = selsort x n), (n :: y = selsort x gv1), (n :: y = y ++ y), (n :: y = y ++ x), (n :: y = x ++ y), (n :: y = x ++ x), (n :: y = []), (n :: x = y), (n :: x = x), (n :: x = selection_sort y)
+(n :: x = selection_sort x), (n :: x = selsort y m), (n :: x = selsort y n), (n :: x = selsort y gv1), (n :: x = selsort x m), (n :: x = selsort x n), (n :: x = selsort x gv1), (n :: x = y ++ y), (n :: x = y ++ x), (n :: x = x ++ y)
+(n :: x = x ++ x), (n :: x = []), (gv1 :: y = y), (gv1 :: y = x), (gv1 :: y = selection_sort y), (gv1 :: y = selection_sort x), (gv1 :: y = selsort y m), (gv1 :: y = selsort y n), (gv1 :: y = selsort y gv1), (gv1 :: y = selsort x m)
+(gv1 :: y = selsort x n), (gv1 :: y = selsort x gv1), (gv1 :: y = y ++ y), (gv1 :: y = y ++ x), (gv1 :: y = x ++ y), (gv1 :: y = x ++ x), (gv1 :: y = []), (gv1 :: x = y), (gv1 :: x = x), (gv1 :: x = selection_sort y)
+(gv1 :: x = selection_sort x), (gv1 :: x = selsort y m), (gv1 :: x = selsort y n), (gv1 :: x = selsort y gv1), (gv1 :: x = selsort x m), (gv1 :: x = selsort x n), (gv1 :: x = selsort x gv1), (gv1 :: x = y ++ y), (gv1 :: x = y ++ x), (gv1 :: x = x ++ y)
+(gv1 :: x = x ++ x), (gv1 :: x = []), (selection_sort y = y), (selection_sort y = x), (selection_sort y = y ++ y), (selection_sort y = y ++ x), (selection_sort y = x ++ y), (selection_sort y = x ++ x), (selection_sort x = y), (selection_sort x = x)
+(selection_sort x = y ++ y), (selection_sort x = y ++ x), (selection_sort x = x ++ y), (selection_sort x = x ++ x), (selsort y m = y), (selsort y m = x), (selsort y m = selection_sort y), (selsort y m = selection_sort x), (selsort y m = y ++ y), (selsort y m = y ++ x)
+(selsort y m = x ++ y), (selsort y m = x ++ x), (selsort y n = y), (selsort y n = x), (selsort y n = selection_sort y), (selsort y n = selection_sort x), (selsort y n = y ++ y), (selsort y n = y ++ x), (selsort y n = x ++ y), (selsort y n = x ++ x)
+(selsort y gv1 = y), (selsort y gv1 = x), (selsort y gv1 = selection_sort y), (selsort y gv1 = selection_sort x), (selsort y gv1 = y ++ y), (selsort y gv1 = y ++ x), (selsort y gv1 = x ++ y), (selsort y gv1 = x ++ x), (selsort x m = y), (selsort x m = x)
+(selsort x m = selection_sort y), (selsort x m = selection_sort x), (selsort x m = y ++ y), (selsort x m = y ++ x), (selsort x m = x ++ y), (selsort x m = x ++ x), (selsort x n = y), (selsort x n = x), (selsort x n = selection_sort y), (selsort x n = selection_sort x)
+(selsort x n = y ++ y), (selsort x n = y ++ x), (selsort x n = x ++ y), (selsort x n = x ++ x), (selsort x gv1 = y), (selsort x gv1 = x), (selsort x gv1 = selection_sort y), (selsort x gv1 = selection_sort x), (selsort x gv1 = y ++ y), (selsort x gv1 = y ++ x)
+(selsort x gv1 = x ++ y), (selsort x gv1 = x ++ x), (y ++ y = y), (y ++ y = x), (y ++ x = y), (y ++ x = x), (x ++ y = y), (x ++ y = x), (x ++ x = y), (x ++ x = x)
+([] = y), ([] = x), ([] = selection_sort y), ([] = selection_sort x), ([] = selsort y m), ([] = selsort y n), ([] = selsort y gv1), ([] = selsort x m), ([] = selsort x n), ([] = selsort x gv1)
+([] = y ++ y), ([] = y ++ x), ([] = x ++ y), ([] = x ++ x), (None = Some m), (None = Some n), (None = Some gv1), ((m, y) = select m y), ((m, y) = select m x), ((m, y) = select n y)
+((m, y) = select n x), ((m, y) = select gv1 y), ((m, y) = select gv1 x), ((m, x) = select m y), ((m, x) = select m x), ((m, x) = select n y), ((m, x) = select n x), ((m, x) = select gv1 y), ((m, x) = select gv1 x), ((n, y) = select m y)
+((n, y) = select m x), ((n, y) = select n y), ((n, y) = select n x), ((n, y) = select gv1 y), ((n, y) = select gv1 x), ((n, x) = select m y), ((n, x) = select m x), ((n, x) = select n y), ((n, x) = select n x), ((n, x) = select gv1 y)
+((n, x) = select gv1 x), ((gv1, y) = select m y), ((gv1, y) = select m x), ((gv1, y) = select n y), ((gv1, y) = select n x), ((gv1, y) = select gv1 y), ((gv1, y) = select gv1 x), ((gv1, x) = select m y), ((gv1, x) = select m x), ((gv1, x) = select n y)
+((gv1, x) = select n x), ((gv1, x) = select gv1 y), ((gv1, x) = select gv1 x), (length y = m), (length y = n), (length y = gv1), (length x = m), (length x = n), (length x = gv1)
+
+Label: 2 (2)
+(m <=* x), (m <=* y), (n <=* x), (n <=* y), (gv0 <=* x), (gv0 <=* y), (sorted x), (sorted y), (Permutation x x), (Permutation x y)
+(Permutation y x), (Permutation y y), (In m x), (In m y), (In n x), (In n y), (In gv0 x), (In gv0 y), (m < m), (m < n)
+(m < gv0), (n < m), (n < n), (n < gv0), (gv0 < m), (gv0 < n), (gv0 < gv0), (m <= m), (m <= n), (m <= gv0)
+(n <= m), (n <= n), (n <= gv0), (gv0 <= m), (gv0 <= n), (gv0 <= gv0), (x = x), (x = y), (y = x), (y = y)
+(m = m), (m = n), (m = gv0), (n = m), (n = n), (n = gv0), (gv0 = m), (gv0 = n), (gv0 = gv0), (false = sorted_bool x)
+(false = sorted_bool y), (true = sorted_bool x), (true = sorted_bool y), (m <=* m :: x), (m <=* m :: y), (m <=* n :: x), (m <=* n :: y), (m <=* gv0 :: x), (m <=* gv0 :: y), (m <=* selection_sort x)
+(m <=* selection_sort y), (m <=* selsort x m), (m <=* selsort x n), (m <=* selsort x gv0), (m <=* selsort y m), (m <=* selsort y n), (m <=* selsort y gv0), (m <=* x ++ x), (m <=* x ++ y), (m <=* y ++ x)
+(m <=* y ++ y), (m <=* []), (n <=* m :: x), (n <=* m :: y), (n <=* n :: x), (n <=* n :: y), (n <=* gv0 :: x), (n <=* gv0 :: y), (n <=* selection_sort x), (n <=* selection_sort y)
+(n <=* selsort x m), (n <=* selsort x n), (n <=* selsort x gv0), (n <=* selsort y m), (n <=* selsort y n), (n <=* selsort y gv0), (n <=* x ++ x), (n <=* x ++ y), (n <=* y ++ x), (n <=* y ++ y)
+(n <=* []), (gv0 <=* m :: x), (gv0 <=* m :: y), (gv0 <=* n :: x), (gv0 <=* n :: y), (gv0 <=* gv0 :: x), (gv0 <=* gv0 :: y), (gv0 <=* selection_sort x), (gv0 <=* selection_sort y), (gv0 <=* selsort x m)
+(gv0 <=* selsort x n), (gv0 <=* selsort x gv0), (gv0 <=* selsort y m), (gv0 <=* selsort y n), (gv0 <=* selsort y gv0), (gv0 <=* x ++ x), (gv0 <=* x ++ y), (gv0 <=* y ++ x), (gv0 <=* y ++ y), (gv0 <=* [])
+(length x <=* x), (length x <=* y), (length x <=* m :: x), (length x <=* m :: y), (length x <=* n :: x), (length x <=* n :: y), (length x <=* gv0 :: x), (length x <=* gv0 :: y), (length x <=* selection_sort x), (length x <=* selection_sort y)
+(length x <=* selsort x m), (length x <=* selsort x n), (length x <=* selsort x gv0), (length x <=* selsort y m), (length x <=* selsort y n), (length x <=* selsort y gv0), (length x <=* x ++ x), (length x <=* x ++ y), (length x <=* y ++ x), (length x <=* y ++ y)
+(length x <=* []), (length y <=* x), (length y <=* y), (length y <=* m :: x), (length y <=* m :: y), (length y <=* n :: x), (length y <=* n :: y), (length y <=* gv0 :: x), (length y <=* gv0 :: y), (length y <=* selection_sort x)
+(length y <=* selection_sort y), (length y <=* selsort x m), (length y <=* selsort x n), (length y <=* selsort x gv0), (length y <=* selsort y m), (length y <=* selsort y n), (length y <=* selsort y gv0), (length y <=* x ++ x), (length y <=* x ++ y), (length y <=* y ++ x)
+(length y <=* y ++ y), (length y <=* []), (sorted (m :: x)), (sorted (m :: y)), (sorted (n :: x)), (sorted (n :: y)), (sorted (gv0 :: x)), (sorted (gv0 :: y)), (sorted (selection_sort x)), (sorted (selection_sort y))
+(sorted (selsort x m)), (sorted (selsort x n)), (sorted (selsort x gv0)), (sorted (selsort y m)), (sorted (selsort y n)), (sorted (selsort y gv0)), (sorted (x ++ x)), (sorted (x ++ y)), (sorted (y ++ x)), (sorted (y ++ y))
+(sorted []), (Permutation x (m :: x)), (Permutation x (m :: y)), (Permutation x (n :: x)), (Permutation x (n :: y)), (Permutation x (gv0 :: x)), (Permutation x (gv0 :: y)), (Permutation x (selection_sort x)), (Permutation x (selection_sort y)), (Permutation x (selsort x m))
+(Permutation x (selsort x n)), (Permutation x (selsort x gv0)), (Permutation x (selsort y m)), (Permutation x (selsort y n)), (Permutation x (selsort y gv0)), (Permutation x (x ++ x)), (Permutation x (x ++ y)), (Permutation x (y ++ x)), (Permutation x (y ++ y)), (Permutation x [])
+(Permutation y (m :: x)), (Permutation y (m :: y)), (Permutation y (n :: x)), (Permutation y (n :: y)), (Permutation y (gv0 :: x)), (Permutation y (gv0 :: y)), (Permutation y (selection_sort x)), (Permutation y (selection_sort y)), (Permutation y (selsort x m)), (Permutation y (selsort x n))
+(Permutation y (selsort x gv0)), (Permutation y (selsort y m)), (Permutation y (selsort y n)), (Permutation y (selsort y gv0)), (Permutation y (x ++ x)), (Permutation y (x ++ y)), (Permutation y (y ++ x)), (Permutation y (y ++ y)), (Permutation y []), (Permutation (m :: x) x)
+(Permutation (m :: x) y), (Permutation (m :: x) (m :: y)), (Permutation (m :: x) (n :: x)), (Permutation (m :: x) (n :: y)), (Permutation (m :: x) (gv0 :: x)), (Permutation (m :: x) (gv0 :: y)), (Permutation (m :: x) (selection_sort x)), (Permutation (m :: x) (selection_sort y)), (Permutation (m :: x) (selsort x m)), (Permutation (m :: x) (selsort x n))
+(Permutation (m :: x) (selsort x gv0)), (Permutation (m :: x) (selsort y m)), (Permutation (m :: x) (selsort y n)), (Permutation (m :: x) (selsort y gv0)), (Permutation (m :: x) (x ++ x)), (Permutation (m :: x) (x ++ y)), (Permutation (m :: x) (y ++ x)), (Permutation (m :: x) (y ++ y)), (Permutation (m :: x) []), (Permutation (m :: y) x)
+(Permutation (m :: y) y), (Permutation (m :: y) (m :: x)), (Permutation (m :: y) (n :: x)), (Permutation (m :: y) (n :: y)), (Permutation (m :: y) (gv0 :: x)), (Permutation (m :: y) (gv0 :: y)), (Permutation (m :: y) (selection_sort x)), (Permutation (m :: y) (selection_sort y)), (Permutation (m :: y) (selsort x m)), (Permutation (m :: y) (selsort x n))
+(Permutation (m :: y) (selsort x gv0)), (Permutation (m :: y) (selsort y m)), (Permutation (m :: y) (selsort y n)), (Permutation (m :: y) (selsort y gv0)), (Permutation (m :: y) (x ++ x)), (Permutation (m :: y) (x ++ y)), (Permutation (m :: y) (y ++ x)), (Permutation (m :: y) (y ++ y)), (Permutation (m :: y) []), (Permutation (n :: x) x)
+(Permutation (n :: x) y), (Permutation (n :: x) (m :: x)), (Permutation (n :: x) (m :: y)), (Permutation (n :: x) (n :: y)), (Permutation (n :: x) (gv0 :: x)), (Permutation (n :: x) (gv0 :: y)), (Permutation (n :: x) (selection_sort x)), (Permutation (n :: x) (selection_sort y)), (Permutation (n :: x) (selsort x m)), (Permutation (n :: x) (selsort x n))
+(Permutation (n :: x) (selsort x gv0)), (Permutation (n :: x) (selsort y m)), (Permutation (n :: x) (selsort y n)), (Permutation (n :: x) (selsort y gv0)), (Permutation (n :: x) (x ++ x)), (Permutation (n :: x) (x ++ y)), (Permutation (n :: x) (y ++ x)), (Permutation (n :: x) (y ++ y)), (Permutation (n :: x) []), (Permutation (n :: y) x)
+(Permutation (n :: y) y), (Permutation (n :: y) (m :: x)), (Permutation (n :: y) (m :: y)), (Permutation (n :: y) (n :: x)), (Permutation (n :: y) (gv0 :: x)), (Permutation (n :: y) (gv0 :: y)), (Permutation (n :: y) (selection_sort x)), (Permutation (n :: y) (selection_sort y)), (Permutation (n :: y) (selsort x m)), (Permutation (n :: y) (selsort x n))
+(Permutation (n :: y) (selsort x gv0)), (Permutation (n :: y) (selsort y m)), (Permutation (n :: y) (selsort y n)), (Permutation (n :: y) (selsort y gv0)), (Permutation (n :: y) (x ++ x)), (Permutation (n :: y) (x ++ y)), (Permutation (n :: y) (y ++ x)), (Permutation (n :: y) (y ++ y)), (Permutation (n :: y) []), (Permutation (gv0 :: x) x)
+(Permutation (gv0 :: x) y), (Permutation (gv0 :: x) (m :: x)), (Permutation (gv0 :: x) (m :: y)), (Permutation (gv0 :: x) (n :: x)), (Permutation (gv0 :: x) (n :: y)), (Permutation (gv0 :: x) (gv0 :: y)), (Permutation (gv0 :: x) (selection_sort x)), (Permutation (gv0 :: x) (selection_sort y)), (Permutation (gv0 :: x) (selsort x m)), (Permutation (gv0 :: x) (selsort x n))
+(Permutation (gv0 :: x) (selsort x gv0)), (Permutation (gv0 :: x) (selsort y m)), (Permutation (gv0 :: x) (selsort y n)), (Permutation (gv0 :: x) (selsort y gv0)), (Permutation (gv0 :: x) (x ++ x)), (Permutation (gv0 :: x) (x ++ y)), (Permutation (gv0 :: x) (y ++ x)), (Permutation (gv0 :: x) (y ++ y)), (Permutation (gv0 :: x) []), (Permutation (gv0 :: y) x)
+(Permutation (gv0 :: y) y), (Permutation (gv0 :: y) (m :: x)), (Permutation (gv0 :: y) (m :: y)), (Permutation (gv0 :: y) (n :: x)), (Permutation (gv0 :: y) (n :: y)), (Permutation (gv0 :: y) (gv0 :: x)), (Permutation (gv0 :: y) (selection_sort x)), (Permutation (gv0 :: y) (selection_sort y)), (Permutation (gv0 :: y) (selsort x m)), (Permutation (gv0 :: y) (selsort x n))
+(Permutation (gv0 :: y) (selsort x gv0)), (Permutation (gv0 :: y) (selsort y m)), (Permutation (gv0 :: y) (selsort y n)), (Permutation (gv0 :: y) (selsort y gv0)), (Permutation (gv0 :: y) (x ++ x)), (Permutation (gv0 :: y) (x ++ y)), (Permutation (gv0 :: y) (y ++ x)), (Permutation (gv0 :: y) (y ++ y)), (Permutation (gv0 :: y) []), (Permutation (selection_sort x) x)
+(Permutation (selection_sort x) y), (Permutation (selection_sort x) (m :: x)), (Permutation (selection_sort x) (m :: y)), (Permutation (selection_sort x) (n :: x)), (Permutation (selection_sort x) (n :: y)), (Permutation (selection_sort x) (gv0 :: x)), (Permutation (selection_sort x) (gv0 :: y)), (Permutation (selection_sort x) (selection_sort y)), (Permutation (selection_sort x) (selsort x m)), (Permutation (selection_sort x) (selsort x n))
+(Permutation (selection_sort x) (selsort x gv0)), (Permutation (selection_sort x) (selsort y m)), (Permutation (selection_sort x) (selsort y n)), (Permutation (selection_sort x) (selsort y gv0)), (Permutation (selection_sort x) (x ++ x)), (Permutation (selection_sort x) (x ++ y)), (Permutation (selection_sort x) (y ++ x)), (Permutation (selection_sort x) (y ++ y)), (Permutation (selection_sort x) []), (Permutation (selection_sort y) x)
+(Permutation (selection_sort y) y), (Permutation (selection_sort y) (m :: x)), (Permutation (selection_sort y) (m :: y)), (Permutation (selection_sort y) (n :: x)), (Permutation (selection_sort y) (n :: y)), (Permutation (selection_sort y) (gv0 :: x)), (Permutation (selection_sort y) (gv0 :: y)), (Permutation (selection_sort y) (selection_sort x)), (Permutation (selection_sort y) (selsort x m)), (Permutation (selection_sort y) (selsort x n))
+(Permutation (selection_sort y) (selsort x gv0)), (Permutation (selection_sort y) (selsort y m)), (Permutation (selection_sort y) (selsort y n)), (Permutation (selection_sort y) (selsort y gv0)), (Permutation (selection_sort y) (x ++ x)), (Permutation (selection_sort y) (x ++ y)), (Permutation (selection_sort y) (y ++ x)), (Permutation (selection_sort y) (y ++ y)), (Permutation (selection_sort y) []), (Permutation (selsort x m) x)
+(Permutation (selsort x m) y), (Permutation (selsort x m) (m :: x)), (Permutation (selsort x m) (m :: y)), (Permutation (selsort x m) (n :: x)), (Permutation (selsort x m) (n :: y)), (Permutation (selsort x m) (gv0 :: x)), (Permutation (selsort x m) (gv0 :: y)), (Permutation (selsort x m) (selection_sort x)), (Permutation (selsort x m) (selection_sort y)), (Permutation (selsort x m) (selsort x n))
+(Permutation (selsort x m) (selsort x gv0)), (Permutation (selsort x m) (selsort y m)), (Permutation (selsort x m) (selsort y n)), (Permutation (selsort x m) (selsort y gv0)), (Permutation (selsort x m) (x ++ x)), (Permutation (selsort x m) (x ++ y)), (Permutation (selsort x m) (y ++ x)), (Permutation (selsort x m) (y ++ y)), (Permutation (selsort x m) []), (Permutation (selsort x n) x)
+(Permutation (selsort x n) y), (Permutation (selsort x n) (m :: x)), (Permutation (selsort x n) (m :: y)), (Permutation (selsort x n) (n :: x)), (Permutation (selsort x n) (n :: y)), (Permutation (selsort x n) (gv0 :: x)), (Permutation (selsort x n) (gv0 :: y)), (Permutation (selsort x n) (selection_sort x)), (Permutation (selsort x n) (selection_sort y)), (Permutation (selsort x n) (selsort x m))
+(Permutation (selsort x n) (selsort x gv0)), (Permutation (selsort x n) (selsort y m)), (Permutation (selsort x n) (selsort y n)), (Permutation (selsort x n) (selsort y gv0)), (Permutation (selsort x n) (x ++ x)), (Permutation (selsort x n) (x ++ y)), (Permutation (selsort x n) (y ++ x)), (Permutation (selsort x n) (y ++ y)), (Permutation (selsort x n) []), (Permutation (selsort x gv0) x)
+(Permutation (selsort x gv0) y), (Permutation (selsort x gv0) (m :: x)), (Permutation (selsort x gv0) (m :: y)), (Permutation (selsort x gv0) (n :: x)), (Permutation (selsort x gv0) (n :: y)), (Permutation (selsort x gv0) (gv0 :: x)), (Permutation (selsort x gv0) (gv0 :: y)), (Permutation (selsort x gv0) (selection_sort x)), (Permutation (selsort x gv0) (selection_sort y)), (Permutation (selsort x gv0) (selsort x m))
+(Permutation (selsort x gv0) (selsort x n)), (Permutation (selsort x gv0) (selsort y m)), (Permutation (selsort x gv0) (selsort y n)), (Permutation (selsort x gv0) (selsort y gv0)), (Permutation (selsort x gv0) (x ++ x)), (Permutation (selsort x gv0) (x ++ y)), (Permutation (selsort x gv0) (y ++ x)), (Permutation (selsort x gv0) (y ++ y)), (Permutation (selsort x gv0) []), (Permutation (selsort y m) x)
+(Permutation (selsort y m) y), (Permutation (selsort y m) (m :: x)), (Permutation (selsort y m) (m :: y)), (Permutation (selsort y m) (n :: x)), (Permutation (selsort y m) (n :: y)), (Permutation (selsort y m) (gv0 :: x)), (Permutation (selsort y m) (gv0 :: y)), (Permutation (selsort y m) (selection_sort x)), (Permutation (selsort y m) (selection_sort y)), (Permutation (selsort y m) (selsort x m))
+(Permutation (selsort y m) (selsort x n)), (Permutation (selsort y m) (selsort x gv0)), (Permutation (selsort y m) (selsort y n)), (Permutation (selsort y m) (selsort y gv0)), (Permutation (selsort y m) (x ++ x)), (Permutation (selsort y m) (x ++ y)), (Permutation (selsort y m) (y ++ x)), (Permutation (selsort y m) (y ++ y)), (Permutation (selsort y m) []), (Permutation (selsort y n) x)
+(Permutation (selsort y n) y), (Permutation (selsort y n) (m :: x)), (Permutation (selsort y n) (m :: y)), (Permutation (selsort y n) (n :: x)), (Permutation (selsort y n) (n :: y)), (Permutation (selsort y n) (gv0 :: x)), (Permutation (selsort y n) (gv0 :: y)), (Permutation (selsort y n) (selection_sort x)), (Permutation (selsort y n) (selection_sort y)), (Permutation (selsort y n) (selsort x m))
+(Permutation (selsort y n) (selsort x n)), (Permutation (selsort y n) (selsort x gv0)), (Permutation (selsort y n) (selsort y m)), (Permutation (selsort y n) (selsort y gv0)), (Permutation (selsort y n) (x ++ x)), (Permutation (selsort y n) (x ++ y)), (Permutation (selsort y n) (y ++ x)), (Permutation (selsort y n) (y ++ y)), (Permutation (selsort y n) []), (Permutation (selsort y gv0) x)
+(Permutation (selsort y gv0) y), (Permutation (selsort y gv0) (m :: x)), (Permutation (selsort y gv0) (m :: y)), (Permutation (selsort y gv0) (n :: x)), (Permutation (selsort y gv0) (n :: y)), (Permutation (selsort y gv0) (gv0 :: x)), (Permutation (selsort y gv0) (gv0 :: y)), (Permutation (selsort y gv0) (selection_sort x)), (Permutation (selsort y gv0) (selection_sort y)), (Permutation (selsort y gv0) (selsort x m))
+(Permutation (selsort y gv0) (selsort x n)), (Permutation (selsort y gv0) (selsort x gv0)), (Permutation (selsort y gv0) (selsort y m)), (Permutation (selsort y gv0) (selsort y n)), (Permutation (selsort y gv0) (x ++ x)), (Permutation (selsort y gv0) (x ++ y)), (Permutation (selsort y gv0) (y ++ x)), (Permutation (selsort y gv0) (y ++ y)), (Permutation (selsort y gv0) []), (Permutation (x ++ x) x)
+(Permutation (x ++ x) y), (Permutation (x ++ x) (m :: x)), (Permutation (x ++ x) (m :: y)), (Permutation (x ++ x) (n :: x)), (Permutation (x ++ x) (n :: y)), (Permutation (x ++ x) (gv0 :: x)), (Permutation (x ++ x) (gv0 :: y)), (Permutation (x ++ x) (selection_sort x)), (Permutation (x ++ x) (selection_sort y)), (Permutation (x ++ x) (selsort x m))
+(Permutation (x ++ x) (selsort x n)), (Permutation (x ++ x) (selsort x gv0)), (Permutation (x ++ x) (selsort y m)), (Permutation (x ++ x) (selsort y n)), (Permutation (x ++ x) (selsort y gv0)), (Permutation (x ++ x) (x ++ y)), (Permutation (x ++ x) (y ++ x)), (Permutation (x ++ x) (y ++ y)), (Permutation (x ++ x) []), (Permutation (x ++ y) x)
+(Permutation (x ++ y) y), (Permutation (x ++ y) (m :: x)), (Permutation (x ++ y) (m :: y)), (Permutation (x ++ y) (n :: x)), (Permutation (x ++ y) (n :: y)), (Permutation (x ++ y) (gv0 :: x)), (Permutation (x ++ y) (gv0 :: y)), (Permutation (x ++ y) (selection_sort x)), (Permutation (x ++ y) (selection_sort y)), (Permutation (x ++ y) (selsort x m))
+(Permutation (x ++ y) (selsort x n)), (Permutation (x ++ y) (selsort x gv0)), (Permutation (x ++ y) (selsort y m)), (Permutation (x ++ y) (selsort y n)), (Permutation (x ++ y) (selsort y gv0)), (Permutation (x ++ y) (x ++ x)), (Permutation (x ++ y) (y ++ x)), (Permutation (x ++ y) (y ++ y)), (Permutation (x ++ y) []), (Permutation (y ++ x) x)
+(Permutation (y ++ x) y), (Permutation (y ++ x) (m :: x)), (Permutation (y ++ x) (m :: y)), (Permutation (y ++ x) (n :: x)), (Permutation (y ++ x) (n :: y)), (Permutation (y ++ x) (gv0 :: x)), (Permutation (y ++ x) (gv0 :: y)), (Permutation (y ++ x) (selection_sort x)), (Permutation (y ++ x) (selection_sort y)), (Permutation (y ++ x) (selsort x m))
+(Permutation (y ++ x) (selsort x n)), (Permutation (y ++ x) (selsort x gv0)), (Permutation (y ++ x) (selsort y m)), (Permutation (y ++ x) (selsort y n)), (Permutation (y ++ x) (selsort y gv0)), (Permutation (y ++ x) (x ++ x)), (Permutation (y ++ x) (x ++ y)), (Permutation (y ++ x) (y ++ y)), (Permutation (y ++ x) []), (Permutation (y ++ y) x)
+(Permutation (y ++ y) y), (Permutation (y ++ y) (m :: x)), (Permutation (y ++ y) (m :: y)), (Permutation (y ++ y) (n :: x)), (Permutation (y ++ y) (n :: y)), (Permutation (y ++ y) (gv0 :: x)), (Permutation (y ++ y) (gv0 :: y)), (Permutation (y ++ y) (selection_sort x)), (Permutation (y ++ y) (selection_sort y)), (Permutation (y ++ y) (selsort x m))
+(Permutation (y ++ y) (selsort x n)), (Permutation (y ++ y) (selsort x gv0)), (Permutation (y ++ y) (selsort y m)), (Permutation (y ++ y) (selsort y n)), (Permutation (y ++ y) (selsort y gv0)), (Permutation (y ++ y) (x ++ x)), (Permutation (y ++ y) (x ++ y)), (Permutation (y ++ y) (y ++ x)), (Permutation (y ++ y) []), (Permutation [] x)
+(Permutation [] y), (Permutation [] (m :: x)), (Permutation [] (m :: y)), (Permutation [] (n :: x)), (Permutation [] (n :: y)), (Permutation [] (gv0 :: x)), (Permutation [] (gv0 :: y)), (Permutation [] (selection_sort x)), (Permutation [] (selection_sort y)), (Permutation [] (selsort x m))
+(Permutation [] (selsort x n)), (Permutation [] (selsort x gv0)), (Permutation [] (selsort y m)), (Permutation [] (selsort y n)), (Permutation [] (selsort y gv0)), (Permutation [] (x ++ x)), (Permutation [] (x ++ y)), (Permutation [] (y ++ x)), (Permutation [] (y ++ y)), (In m (m :: x))
+(In m (m :: y)), (In m (n :: x)), (In m (n :: y)), (In m (gv0 :: x)), (In m (gv0 :: y)), (In m (selection_sort x)), (In m (selection_sort y)), (In m (selsort x m)), (In m (selsort x n)), (In m (selsort x gv0))
+(In m (selsort y m)), (In m (selsort y n)), (In m (selsort y gv0)), (In m (x ++ x)), (In m (x ++ y)), (In m (y ++ x)), (In m (y ++ y)), (In n (m :: x)), (In n (m :: y)), (In n (n :: x))
+(In n (n :: y)), (In n (gv0 :: x)), (In n (gv0 :: y)), (In n (selection_sort x)), (In n (selection_sort y)), (In n (selsort x m)), (In n (selsort x n)), (In n (selsort x gv0)), (In n (selsort y m)), (In n (selsort y n))
+(In n (selsort y gv0)), (In n (x ++ x)), (In n (x ++ y)), (In n (y ++ x)), (In n (y ++ y)), (In gv0 (m :: x)), (In gv0 (m :: y)), (In gv0 (n :: x)), (In gv0 (n :: y)), (In gv0 (gv0 :: x))
+(In gv0 (gv0 :: y)), (In gv0 (selection_sort x)), (In gv0 (selection_sort y)), (In gv0 (selsort x m)), (In gv0 (selsort x n)), (In gv0 (selsort x gv0)), (In gv0 (selsort y m)), (In gv0 (selsort y n)), (In gv0 (selsort y gv0)), (In gv0 (x ++ x))
+(In gv0 (x ++ y)), (In gv0 (y ++ x)), (In gv0 (y ++ y)), (In (length x) x), (In (length x) y), (In (length x) (m :: x)), (In (length x) (m :: y)), (In (length x) (n :: x)), (In (length x) (n :: y)), (In (length x) (gv0 :: x))
+(In (length x) (gv0 :: y)), (In (length x) (selection_sort x)), (In (length x) (selection_sort y)), (In (length x) (selsort x m)), (In (length x) (selsort x n)), (In (length x) (selsort x gv0)), (In (length x) (selsort y m)), (In (length x) (selsort y n)), (In (length x) (selsort y gv0)), (In (length x) (x ++ x))
+(In (length x) (x ++ y)), (In (length x) (y ++ x)), (In (length x) (y ++ y)), (In (length y) x), (In (length y) y), (In (length y) (m :: x)), (In (length y) (m :: y)), (In (length y) (n :: x)), (In (length y) (n :: y)), (In (length y) (gv0 :: x))
+(In (length y) (gv0 :: y)), (In (length y) (selection_sort x)), (In (length y) (selection_sort y)), (In (length y) (selsort x m)), (In (length y) (selsort x n)), (In (length y) (selsort x gv0)), (In (length y) (selsort y m)), (In (length y) (selsort y n)), (In (length y) (selsort y gv0)), (In (length y) (x ++ x))
+(In (length y) (x ++ y)), (In (length y) (y ++ x)), (In (length y) (y ++ y)), (m < length x), (m < length y), (n < length x), (n < length y), (gv0 < length x), (gv0 < length y), (length x < m)
+(length x < n), (length x < gv0), (length x < length y), (length y < m), (length y < n), (length y < gv0), (length y < length x), (m <= length x), (m <= length y), (n <= length x)
+(n <= length y), (gv0 <= length x), (gv0 <= length y), (length x <= m), (length x <= n), (length x <= gv0), (length x <= length y), (length y <= m), (length y <= n), (length y <= gv0)
+(length y <= length x), (~ m <=* x), (~ m <=* y), (~ n <=* x), (~ n <=* y), (~ gv0 <=* x), (~ gv0 <=* y), (~ sorted x), (~ sorted y), (~ Permutation x x)
+(~ Permutation x y), (~ Permutation y x), (~ Permutation y y), (~ In m x), (~ In m y), (~ In n x), (~ In n y), (~ In gv0 x), (~ In gv0 y), (~ m < m)
+(~ m < n), (~ m < gv0), (~ n < m), (~ n < n), (~ n < gv0), (~ gv0 < m), (~ gv0 < n), (~ gv0 < gv0), (~ m <= m), (~ m <= n)
+(~ m <= gv0), (~ n <= m), (~ n <= n), (~ n <= gv0), (~ gv0 <= m), (~ gv0 <= n), (~ gv0 <= gv0), (x <> x), (x <> y), (y <> x)
+(y <> y), (m <> m), (m <> n), (m <> gv0), (n <> m), (n <> n), (n <> gv0), (gv0 <> m), (gv0 <> n), (gv0 <> gv0)
+(None = Some x), (None = Some y), (m :: x = x), (m :: x = y), (m :: x = selection_sort x), (m :: x = selection_sort y), (m :: x = selsort x m), (m :: x = selsort x n), (m :: x = selsort x gv0), (m :: x = selsort y m)
+(m :: x = selsort y n), (m :: x = selsort y gv0), (m :: x = x ++ x), (m :: x = x ++ y), (m :: x = y ++ x), (m :: x = y ++ y), (m :: x = []), (m :: y = x), (m :: y = y), (m :: y = selection_sort x)
+(m :: y = selection_sort y), (m :: y = selsort x m), (m :: y = selsort x n), (m :: y = selsort x gv0), (m :: y = selsort y m), (m :: y = selsort y n), (m :: y = selsort y gv0), (m :: y = x ++ x), (m :: y = x ++ y), (m :: y = y ++ x)
+(m :: y = y ++ y), (m :: y = []), (n :: x = x), (n :: x = y), (n :: x = selection_sort x), (n :: x = selection_sort y), (n :: x = selsort x m), (n :: x = selsort x n), (n :: x = selsort x gv0), (n :: x = selsort y m)
+(n :: x = selsort y n), (n :: x = selsort y gv0), (n :: x = x ++ x), (n :: x = x ++ y), (n :: x = y ++ x), (n :: x = y ++ y), (n :: x = []), (n :: y = x), (n :: y = y), (n :: y = selection_sort x)
+(n :: y = selection_sort y), (n :: y = selsort x m), (n :: y = selsort x n), (n :: y = selsort x gv0), (n :: y = selsort y m), (n :: y = selsort y n), (n :: y = selsort y gv0), (n :: y = x ++ x), (n :: y = x ++ y), (n :: y = y ++ x)
+(n :: y = y ++ y), (n :: y = []), (gv0 :: x = x), (gv0 :: x = y), (gv0 :: x = selection_sort x), (gv0 :: x = selection_sort y), (gv0 :: x = selsort x m), (gv0 :: x = selsort x n), (gv0 :: x = selsort x gv0), (gv0 :: x = selsort y m)
+(gv0 :: x = selsort y n), (gv0 :: x = selsort y gv0), (gv0 :: x = x ++ x), (gv0 :: x = x ++ y), (gv0 :: x = y ++ x), (gv0 :: x = y ++ y), (gv0 :: x = []), (gv0 :: y = x), (gv0 :: y = y), (gv0 :: y = selection_sort x)
+(gv0 :: y = selection_sort y), (gv0 :: y = selsort x m), (gv0 :: y = selsort x n), (gv0 :: y = selsort x gv0), (gv0 :: y = selsort y m), (gv0 :: y = selsort y n), (gv0 :: y = selsort y gv0), (gv0 :: y = x ++ x), (gv0 :: y = x ++ y), (gv0 :: y = y ++ x)
+(gv0 :: y = y ++ y), (gv0 :: y = []), (selection_sort x = x), (selection_sort x = y), (selection_sort x = x ++ x), (selection_sort x = x ++ y), (selection_sort x = y ++ x), (selection_sort x = y ++ y), (selection_sort y = x), (selection_sort y = y)
+(selection_sort y = x ++ x), (selection_sort y = x ++ y), (selection_sort y = y ++ x), (selection_sort y = y ++ y), (selsort x m = x), (selsort x m = y), (selsort x m = selection_sort x), (selsort x m = selection_sort y), (selsort x m = x ++ x), (selsort x m = x ++ y)
+(selsort x m = y ++ x), (selsort x m = y ++ y), (selsort x n = x), (selsort x n = y), (selsort x n = selection_sort x), (selsort x n = selection_sort y), (selsort x n = x ++ x), (selsort x n = x ++ y), (selsort x n = y ++ x), (selsort x n = y ++ y)
+(selsort x gv0 = x), (selsort x gv0 = y), (selsort x gv0 = selection_sort x), (selsort x gv0 = selection_sort y), (selsort x gv0 = x ++ x), (selsort x gv0 = x ++ y), (selsort x gv0 = y ++ x), (selsort x gv0 = y ++ y), (selsort y m = x), (selsort y m = y)
+(selsort y m = selection_sort x), (selsort y m = selection_sort y), (selsort y m = x ++ x), (selsort y m = x ++ y), (selsort y m = y ++ x), (selsort y m = y ++ y), (selsort y n = x), (selsort y n = y), (selsort y n = selection_sort x), (selsort y n = selection_sort y)
+(selsort y n = x ++ x), (selsort y n = x ++ y), (selsort y n = y ++ x), (selsort y n = y ++ y), (selsort y gv0 = x), (selsort y gv0 = y), (selsort y gv0 = selection_sort x), (selsort y gv0 = selection_sort y), (selsort y gv0 = x ++ x), (selsort y gv0 = x ++ y)
+(selsort y gv0 = y ++ x), (selsort y gv0 = y ++ y), (x ++ x = x), (x ++ x = y), (x ++ y = x), (x ++ y = y), (y ++ x = x), (y ++ x = y), (y ++ y = x), (y ++ y = y)
+([] = x), ([] = y), ([] = selection_sort x), ([] = selection_sort y), ([] = selsort x m), ([] = selsort x n), ([] = selsort x gv0), ([] = selsort y m), ([] = selsort y n), ([] = selsort y gv0)
+([] = x ++ x), ([] = x ++ y), ([] = y ++ x), ([] = y ++ y), (None = Some m), (None = Some n), (None = Some gv0), ((m, x) = select m x), ((m, x) = select m y), ((m, x) = select n x)
+((m, x) = select n y), ((m, x) = select gv0 x), ((m, x) = select gv0 y), ((m, y) = select m x), ((m, y) = select m y), ((m, y) = select n x), ((m, y) = select n y), ((m, y) = select gv0 x), ((m, y) = select gv0 y), ((n, x) = select m x)
+((n, x) = select m y), ((n, x) = select n x), ((n, x) = select n y), ((n, x) = select gv0 x), ((n, x) = select gv0 y), ((n, y) = select m x), ((n, y) = select m y), ((n, y) = select n x), ((n, y) = select n y), ((n, y) = select gv0 x)
+((n, y) = select gv0 y), ((gv0, x) = select m x), ((gv0, x) = select m y), ((gv0, x) = select n x), ((gv0, x) = select n y), ((gv0, x) = select gv0 x), ((gv0, x) = select gv0 y), ((gv0, y) = select m x), ((gv0, y) = select m y), ((gv0, y) = select n x)
+((gv0, y) = select n y), ((gv0, y) = select gv0 x), ((gv0, y) = select gv0 y), (length x = m), (length x = n), (length x = gv0), (length y = m), (length y = n), (length y = gv0)
+
+
+------------------------------ SYNTHESIS RESULTS ------------------------------
+Time Elapsed From Start: 52.652 seconds
+
+
+Label: 0 (0)
+(Permutation (m :: y) (n :: x)), (Permutation (n :: x) (m :: y)), ((m, y) = select n x)
+
+Label: 1 (1)
+(length y = gv1), (length x = gv1)
+
+Label: 2 (2)
+(length x = gv0), (length y = gv0)
+
+
+
+
+
+
+------------------------------ FINAL RESULTS ------------------------------
+Time Elapsed From Start: 70.441 seconds
+
+Number of Result Pairs Returned: 3
+
+1. (select n x = (m, y) -> length x = length y)
+
+2. (select n x = (m, y) -> Permutation (m :: y) (n :: x))
+(Permutation (m :: y) (n :: x) -> length x = length y)
+
+3. (select n x = (m, y) -> Permutation (n :: x) (m :: y))
+(Permutation (n :: x) (m :: y) -> length x = length y)

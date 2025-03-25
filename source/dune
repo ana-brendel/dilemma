@@ -1,0 +1,35 @@
+(library
+ (name dilemma)                   ; This is the name you will use in
+                                    ; Coq's `Declare ML Module`, and
+                                    ; the name of the main OCaml
+                                    ; module of your plugin.
+
+ (public_name dilemma.plugin) ; This makes the plugin
+                                    ; installable; recommended, must
+                                    ; match opam package name.
+
+ (synopsis "Lemma synthesis plugin") ; Synopsis, used in META generation.
+
+ (flags :standard -rectypes -w -27) ; Coq requires the `-rectypes`
+                                    ; flag; CoqPP generated code
+                                    ; requires to disable warning 27
+                                    ; often.
+
+ ( libraries                         ; OCaml Libraries we want to link with, your choice here.
+  coq-core.vernac
+  coq-serapi.serapi_v8_14
+  coq-serapi.sertop_v8_12
+  parmap 
+  prop_synth
+  coq_extractions
+ )
+)
+
+; If I get error: 
+; File "./theories/LFindToo.v", line 1, characters 0-39:
+; Error:
+; Dynlink error: error loading shared library: Dynlink.Error (Dynlink.Cannot_open_dll "Failure(\"dlopen(/Users/anabrendel/.opam/default/lib/coq/../coq-core/../lemmafinder/plugin/lfindtoo.cmxs, 0x000A): symbol not found in flat namespace '_camlConstr.eq_constr_2088'\")")
+; Then find the lemmafinder folder under /Users/anabrendel/.opam/default/lib/coq/ and delete it and rebuild
+
+; This will let Dune know about Coq's .mlg grammar files.
+(coq.pp (modules def_tactic))

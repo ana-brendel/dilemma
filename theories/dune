@@ -1,0 +1,15 @@
+(coq.theory
+ (name Dilemma)                   ; This will determine the top-level Coq
+                                   ; module of your theory, modules will
+                                   ; be MyPlugin.A, etc., when seen from the
+                                   ; outside.
+
+ (package dilemma)           ; Adding this line will make your
+                                   ; library installable in the opam package
+
+ (libraries dilemma.plugin)) ; Here you should declare all
+                                   ; OCaml plugin dependencies
+                                   ; for your Coq files.
+                                   ; MIGHT WANT TO ADD parmap here 
+
+; Other important fields are `modules` and `flags`, see Dune documentation for more details.

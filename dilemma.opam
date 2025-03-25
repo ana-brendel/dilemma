@@ -1,0 +1,19 @@
+opam-version: "2.1.5"
+
+synopsis:     "Coq Lemma Synthesizer"
+description:  "Synthesizes Lemmas"
+name:         "dilemma"
+maintainer:   "anabrendel25@ucla.edu"
+authors:      "Ana Brendel"
+
+license: "MIT"
+
+depends: [
+  "ocaml"          { >= "4.07.1"            }
+  "coq"            { >= "8.14"              }
+  "dune"           { >= "2.4.0"             }
+  "coq-quickchick" { >=  "2.0.0"            }
+  "coq-serapi"    
+]
+substs: [ "theories/Dilemma.v"]
+build: [ "dune" "build" "-p" name "-j" jobs ]

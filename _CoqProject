@@ -1,0 +1,8 @@
+-Q theories dilemma.Plugin
+-Q source dilemma.Plugin
+-I source
+
+source/tactic.ml
+source/def_tactic.mlg
+source/dilemma.mlpack
+theories/Dilemma.v

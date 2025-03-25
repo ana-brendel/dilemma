@@ -1,0 +1,11 @@
+(library
+ (name coq_extractions)
+ (public_name dilemma.coq_extraction)
+ (flags :standard -rectypes -w -27 -w -26 -w -3 -w -8 -w -33 -w -21) 
+ (libraries
+   coq-core.vernac
+   coq-serapi.serapi_v8_14
+   coq-serapi.sertop_v8_12
+   parmap
+ )
+)

@@ -1,0 +1,11 @@
+DECLARE PLUGIN "dilemma.plugin"
+
+{
+
+open Ltac_plugin
+
+}
+
+TACTIC EXTEND Hello
+| [ "dilemma" ] -> { Tactic.driver }
+END
