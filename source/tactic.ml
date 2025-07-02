@@ -1,27 +1,6 @@
 open Masks
 open Coq_extractions
 
-(* let do_ranking (info : Playground.info) k results (cmp : Candidates.result -> Candidates.result -> int) =
-    let results_sorted = List.sort cmp results in Utils.clear_dir info.tmp_dir; 
-    let first, second = Utils.partition_at_split 15 results_sorted in
-    let valid = Candidates.prune_invalid info first in
-    if List.length valid >= 10 then Utils.partition_at 10 valid
-    else let valid_2 = Candidates.prune_invalid info second in Utils.partition_at 10 (valid @ valid_2) *)
-
-(* let different_rankings output_file info previous current (results : Candidates.result list) : unit = 
-  let clean s = Str.global_replace (Str.regexp "\n") " " s |> Str.global_replace (Str.regexp "\t") " " in
-  let format_results = List.mapi (fun i (l,m) -> if String.equal l m then Printf.sprintf "%d. %s\n" (i + 1) (clean l) else Printf.sprintf "%d. %s\n%s\n" (i + 1) (clean l) (clean m)) in
-  let r0 = "------------------------------ RANKING (length based 1) ------------------------------" in
-  let c0 = List.map (Candidates.result_str info) (do_ranking info 10 results Candidates.rank_length_alt) |> format_results |> String.concat "\n" in
-  let r1 = "------------------------------ RANKING (length based 2) ------------------------------" in
-  let c1 = List.map (Candidates.result_str info) (do_ranking info 10 results Candidates.rank_length) |> format_results |> String.concat "\n" in
-  let r2 = "------------------------------ RANKING (construction) ------------------------------" in
-  let c2 = List.map (Candidates.result_str info) (do_ranking info 10 results Candidates.rank_construction_other) |> format_results |> String.concat "\n" in
-  let r3 = "------------------------------ RANKING (current) ------------------------------" in
-  let c3 = List.map (Candidates.result_str info) (Utils.partition_at 10 current) |> format_results |> String.concat "\n" in 
-  let contents = String.concat "\n" [previous;"\n";r0;c0;"";r1;c1;"";r2;c2;"";r3;c3;"";] in
-  Utils.write_to_file output_file contents *)
-
 let driver = 
   Proofview.Goal.enter begin fun gl ->
     let initial_time = Unix.gettimeofday() in
@@ -123,10 +102,10 @@ let driver =
     let no_weakening = Candidates.get_results_directly offset executions in
     (* let prioritize_rewrites = (Hashtbl.length ungeneralized.assumptions = 0)in *)
     let all_results' = List.sort (Candidates.compare) (no_weakening @ (List.concat_map (fun (c: Candidates.constructor) -> c.results) processed)) in
-    let all_results = Utils.remove_duplicate Candidates.result_eq all_results' in
     Utils.clear_dir info.tmp_dir; 
+    let all_results = Utils.remove_duplicate Candidates.result_eq all_results' in
     print_endline "Checking that all lemmas are valid with QuickChick (double check)...";
-    let valid = Candidates.prune_invalid info (Utils.partition_at 30 all_results) in
+    let valid = Candidates.prune_invalid info (Utils.partition_at 30 all_results) |> Utils.my_parmapi (ReduceProof.reduce_constructor info) in
     print_endline ("[QuickChick Check Complete] Time Elapsed From Start: " ^ (Unix.gettimeofday () |> elapsed_time) ^ " seconds\n");
     let all_lemmas = List.map (Candidates.result_str info) all_results in 
     let lemmas = List.map (Candidates.result_str info) valid in 

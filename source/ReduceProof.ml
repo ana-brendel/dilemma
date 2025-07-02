@@ -236,3 +236,20 @@ let simplify_assumptions (info : Playground.info) (proof : Playground.proof) : P
   let goal = Vars.replace_vars rewrites og_goal |> gexpr in
   let variables = goal.variables @ (Hashtbl.to_seq_values assumptions |> List.of_seq |> List.concat_map (fun e -> e.variables)) |> remove_duplicate variable_eq in 
   { goal; assumptions; generalized_terms = None; variables }
+
+let reduce_constructor (info : Playground.info) i (constructor : Candidates.result) : Candidates.result = 
+  match constructor.kind, constructor.synthesized with GENERALIZED, _ | WEAKENED, _ | AS_IS, _ | GENERALIZED_WEAKENED, None -> constructor
+  | GENERALIZED_WEAKENED, Some implicant ->
+    let implication a = List.fold_left (fun acc (assump : Constr.t) -> Utils.implication_constr assump acc) constructor.goal a in
+  let possible_sets = Utils.power_set constructor.preconditions |> List.filter (List.mem implicant) in
+  let rec check_k k =
+    if (List.length constructor.preconditions <= k) then constructor.preconditions
+    else let groups = List.filter (fun s -> List.length s = k) possible_sets in
+    let exprs = List.map implication groups |> List.map (expr_from_constr info.env info.sigma) in
+    let label = Printf.sprintf "remove_assumptions_for_result_%d" i in
+    let query : CoqInterface.query = { q = CoqInterface.Satisfiable exprs; label; info } in
+    let results = match CoqInterface.execute query with | CoqInterface.Satisfiability r -> r | _ -> raise (Failure "[in ReduceProof.reduce_constructors] Unexpected/incorrect result type.") in
+    if (List.length groups != List.length results) then (raise (Failure "[in ReduceProof.reduce_constructors] Error in determining which assumptions are necessary"));
+    let passed = List.combine groups results |> List.filter_map (fun (g,r) -> if snd r then Some g else None) in
+    match passed with | [] -> check_k (k+1) | h :: _ -> h in
+  let preconditions = check_k 0 in { constructor with preconditions }

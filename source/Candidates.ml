@@ -279,29 +279,6 @@ let constr_cmp c1 c2 : int =
   else let h1, h2 = constr_height c1, constr_height c2 in
   if h1 != h2 then h1 - h2 else Constr.compare c1 c2
 
-(* 0 if equal, positive means first is greater (comes second), negative means first is less (comes first) *)
-(* TODO these might want to be changed *)
-(* let score_by_kind prioritize_rewrites (r : result) : int = 
-  match r.kind with 
-  | GENERALIZED -> 1 
-  | AS_IS -> if prioritize_rewrites then 3 else 2 
-  | WEAKENED -> if prioritize_rewrites then 4 else 4 
-  | GENERALIZED_WEAKENED -> if prioritize_rewrites then 2 else 3 *)
-
-(* let compare prioritize_rewrites (r1 : result) (r2 : result) : int = 
-  if r1.kind != r2.kind then score_by_kind prioritize_rewrites r1 - score_by_kind prioritize_rewrites r2
-  else match r1.kind with
-  | AS_IS -> 0
-  | GENERALIZED when (r1.generalizations != r2.generalizations) -> r2.generalizations - r1.generalizations
-  | GENERALIZED_WEAKENED when (r1.generalizations != r2.generalizations) -> r2.generalizations - r1.generalizations
-  | GENERALIZED_WEAKENED when (prioritize_rewrites && (List.length r1.preconditions != List.length r2.preconditions)) -> Int.compare (List.length r1.preconditions) (List.length r2.preconditions)
-  | GENERALIZED | GENERALIZED_WEAKENED -> constr_nodes r1.goal - constr_nodes r1.goal
-  | WEAKENED -> match r1.weakening, r2.weakening with
-  | None, _ | _, None -> raise (Failure "Expect there to be a weakening [in Candidates.compare]")
-  | Some w1, Some w2 -> let cmp_constrs c1 c2 = constr_nodes c1 - constr_nodes c2 in
-    let cmp_og, cmp_weak = cmp_constrs w2.original w1.original, cmp_constrs w1.result w2.result in
-    if cmp_og != 0 then cmp_og else cmp_weak *)
-
 let prune_invalid (info : Playground.info) results : result list =
   let gexpr = expr_from_constr info.env info.sigma in
   let make_expr r = 
@@ -328,22 +305,6 @@ let alt_score_by_kind (r : result) : int =
   | GENERALIZED_WEAKENED when (List.is_empty r.preconditions) -> 3
   | WEAKENED -> 4
   | GENERALIZED_WEAKENED -> 5
-
-(* let rank_length (r1 : result) (r2 : result) : int = 
-  let get_size (r : result) =
-    let overall = List.fold_left (fun score c -> score + (constr_nodes c)) (constr_nodes r.goal) r.preconditions in
-    match r.weakening with None -> overall
-    | Some w -> let alt = constr_nodes w.result + constr_nodes w.original in if alt < overall then alt else overall
-  in let size_compare = get_size r1 - get_size r2 in
-  if size_compare = 0 then (alt_score_by_kind r1 - alt_score_by_kind r2) else size_compare *)
-
-(* let rank_length_alt (r1 : result) (r2 : result) : int = 
-  let get_size (r : result) =
-    match r.kind with
-    | GENERALIZED | GENERALIZED_WEAKENED | AS_IS-> constr_nodes r.goal
-    | WEAKENED -> match r.weakening with Some w -> constr_nodes w.result | None -> constr_nodes r.goal 
-  in let size_compare = get_size r1 - get_size r2 in
-  if size_compare = 0 then (alt_score_by_kind r1 - alt_score_by_kind r2) else size_compare *)
 
 let compare (r1 : result) (r2 : result) : int = 
   let overall (r : result)= List.fold_left (fun score c -> score + (constr_nodes c)) 0 r.preconditions in
