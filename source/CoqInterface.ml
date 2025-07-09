@@ -2,9 +2,12 @@ open Masks
 open Serapi
 open Sertop
 
+let reduction_count = 10000
+
 type query_opt = 
   Satisfiable of expr list
   | ProvablyEquilvalent of expr * expr
+  | Reduction of expr list * expr
 
 type query = {
   q : query_opt;
@@ -15,6 +18,8 @@ type query = {
 type result = 
   Satisfiability of (expr * bool) list
   | ProvablyEquilvalentResults of (expr * expr) * bool
+  | ReductionResults of (Constr.t, bool Array.t) Hashtbl.t * int list
+  (* | ReductionResults of (int * (expr * bool) list * (expr * bool)) list *)
   | Error of string * query_opt
   
 let exec (cmd : Serapi_protocol.cmd) =
@@ -46,6 +51,7 @@ let pp_query (q : query) : unit =
   match q.q with
   | ProvablyEquilvalent (a,b) -> print_endline ("Checks provable equality for: "); print_endline (str a.body ^ " =? " ^ str b.body)
   | Satisfiable exprs -> print_endline ("Satisfiability of: " ^ String.concat ", " (List.map (fun e -> Utils.str_of_constr env sigma e.body) exprs))
+  | Reduction (assumptions,goal) -> print_endline ("Reducing: " ^ String.concat " -> " (List.map (fun e -> str e.body) (assumptions @ [goal]))) 
 
 let format_satisfiable_query (info : Playground.info) (label : string) (exprs : expr list) : string list = 
   let env, sigma = info.env, info.sigma in
@@ -76,11 +82,50 @@ let format_provably_equivalent (info : Playground.info) (label : string) a b : s
   [lemma2; "Proof. simpl. intros MyAssump. apply MyAssump. Qed."; "Check (0)."];
   [lemma2; "Proof. simpl. intros MyAssump. rewrite <- MyAssump. reflexivity. Qed."; "Check (0)."];
   [lemma2; "Proof. simpl. intros MyAssump. rewrite -> MyAssump. reflexivity. Qed."; "Check (0)."]]
+
+let validity_for_reduction (info : Playground.info) count ((vars,str_vars),(types,str_types)) (assumptions' : expr list) (goal' : expr) = 
+  let assumptions = List.map (fun e -> e.body) assumptions' in let goal = goal'.body in
+  let str = Utils.str_of_constr_full_via_str info.env info.sigma in 
+  if List.is_empty types then [] 
+  else let print = Printf.sprintf "Parameter print : %s -> string -> %s." (str (List.hd types)) (str (List.hd types)) in 
+  let parameters = List.map2 (fun v t -> Printf.sprintf "(%s : %s)" (Names.Id.to_string v) (str t)) vars types |> String.concat " " in 
+  let show_prop = "Definition show_prop (P : Prop) {_ : Dec P} := \"!\" ++ show (prop_to_bool P) ++ \"!\"." in
+  let implication_constr (pre : Constr.t) (post : Constr.t) : Constr.t = Constr.mkProd (Context.anonR, pre, post) in
+  let prop = List.fold_left (fun acc assump -> implication_constr assump acc) goal assumptions |> str in
+  let format_part = (fun i c -> let lab = Printf.sprintf "part%d" i in lab, Printf.sprintf "let %s := show_prop (%s) in" lab (str c)) in
+  let parts = List.mapi format_part (goal :: assumptions) in
+  let props_from_parts = String.concat "\n" (List.map snd parts) in
+  let prop_to_bool = "Definition prop_to_bool (P : Prop) {_ : Dec P} := (match (@dec P _) with | left _ => true | right _ => false end)." in
+  [
+      Printf.sprintf "Extract Constant defNumTests => \"%d\"." count; ""; "Open Scope string_scope.";
+      print; "Extract Constant print => \"fun n nstr -> print_endline (String.of_seq (List.to_seq nstr)); (n)\". ";
+      prop_to_bool; show_prop; "Close Scope string_scope."; "";
+      Printf.sprintf "Lemma generate %s : %s. Admitted." parameters prop;
+      Printf.sprintf "Definition generate_for_type %s :=" parameters;
+      props_from_parts;
+      Printf.sprintf "let lfvar := print %s (%s) in" (Names.Id.to_string (List.hd vars)) (String.concat " ++ " (List.map fst parts));
+      Printf.sprintf "generate lfvar %s." (String.concat " " (List.map Names.Id.to_string (List.tl vars)));
+      "\nQuickChick generate_for_type."
+  ]
   
+let get_example_format (info : Playground.info) (exprs : expr list)  =
+  let variables = List.concat_map (fun e -> e.variables) exprs |> Utils.remove_duplicate variable_eq in
+  let typ = Utils.get_nat info.env in
+  let str = Utils.str_of_constr info.env info.sigma in
+  let sort_by_var = List.sort (fun v1 v2 -> Names.Id.compare (fst v1) (fst v2)) in
+  let mono = List.map (fun (v : Masks.variable) -> if (Constr.isVar v.typ) then { v with typ } else v) variables in
+  let filtered = List.filter (fun (v : Masks.variable) -> Constr.is_Set v.typ |> not) mono in
+  let vars' = sort_by_var (List.map (fun (v : Masks.variable) -> v.id, v.typ) filtered) in
+  let vars,types = List.split vars' in
+  let str_types = Printf.sprintf "(%s)" (String.concat " * " (List.map (fun v -> str v) types)) in 
+  let str_vars = Printf.sprintf "(%s)" (String.concat "," (List.map (fun v -> Names.Id.to_string v) vars)) in 
+  (vars,str_vars), (types,str_types)
+
 let format_query (query : query) : string list list = 
   match query.q with
   | ProvablyEquilvalent (a,b) -> format_provably_equivalent query.info query.label a b
   | Satisfiable exprs  -> if List.is_empty exprs then [] else [format_satisfiable_query query.info query.label exprs]
+  | Reduction (assumptions,goal) -> [validity_for_reduction query.info reduction_count (get_example_format query.info (goal :: assumptions)) assumptions goal]
 
 let populate_prop (state', goal', assumps') (state_bool, goal_bool, assump_bools, example) =
   let update p b = if b then {p with true_on = example :: p.true_on} else {p with false_on = example :: p.false_on} in
@@ -98,10 +143,26 @@ let process_satisfiable_results env sigma (exprs : expr list) (results' : string
 
 let process_provably_equivalent_results a b results = ProvablyEquilvalentResults ((a,b), List.is_empty results |> not)
 
+let process_reduction_results str assumptions goal results = 
+  let counts = List.length (goal :: assumptions) in
+  let filtered = List.filter (String.starts_with ~prefix:"!") results in
+  let splits l = String.split_on_char '!' l |> List.filter (fun s -> String.length s > 0) |> List.map (String.equal "true") in
+  let processed = List.map splits filtered in let result = Hashtbl.create counts in 
+  List.iter (fun c -> Hashtbl.add result c.body (Array.make reduction_count false)) (goal :: assumptions);
+  (* add a flag if example is false *)
+  let flag_index i (e,b) = Array.set (Hashtbl.find result e.body) i (not b) in
+  let example i lst =
+    if List.length lst != counts then raise (Failure "Result count doesn't match in CoqInterface.process_reduction_results")
+    else match lst with
+    | gb :: ab -> List.iter (flag_index i) (List.combine assumptions ab); if gb then None else Some i
+    | _ -> raise (Failure "Results expected to not be empty CoqInterface.process_reduction_results") in
+  let false_on_goal = List.mapi example processed |> List.filter_map (fun x -> x) in ReductionResults (result,false_on_goal)
+
 let process_query_results (query : query) (results : string list) : result =
   match query.q with
   | ProvablyEquilvalent (a,b) -> Utils.break (); process_provably_equivalent_results a b results
   | Satisfiable exprs -> process_satisfiable_results query.info.env query.info.sigma exprs results
+  | Reduction (assumptions,goal) -> process_reduction_results (Utils.str_of_constr query.info.env query.info.sigma) assumptions goal results
 
 let rec handle_provabilty_equivalent pair file one two query = 
   let next o t = handle_provabilty_equivalent pair file o t query in

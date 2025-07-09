@@ -42,7 +42,7 @@ let driver =
     let ungen, gen = List.partition (fun (g: Generalize.t) -> match g.generalized_terms with | None -> true | _ -> false) generalizations' in
     let og = if (List.length ungen = 1) then (List.hd ungen) else raise (Failure "[in tactic] Should only be one ungeneralized") in
     print_endline "Reducing original proof context to include only the necesary information...";
-    let ungeneralized = ReduceProof.initial_filter info og in 
+    let ungeneralized = UpdatedReduceProof.initial_filter info og in
 
     match ungeneralized.state with
     | UNSTABLE -> (print_endline "PROOF IS UNSTABLE WITHOUT QUANTIFIED ASSUMPTIONS - need to use a quanitifed assumption and/or find contradiction"; 
@@ -58,7 +58,7 @@ let driver =
 
     print_endline ("Reducing generalizations to include only necessary info...");
     let max_generalization_infer = 2 in
-    let generalizations = ungeneralized :: Utils.my_parmap (ReduceProof.filter_assumptions info ungeneralized.assumptions) gen 
+    let generalizations = ungeneralized :: Utils.my_parmap (UpdatedReduceProof.filter_assumptions info ungeneralized.assumptions) gen 
       |> List.sort (fun (g1 :Generalize.t) (g2 :Generalize.t) -> Int.compare (g1.label) (g2.label))
       |> Utils.my_parmapi (Generalize.check_validity info) (* doing a final pass to make sure we are correctly resasoning about validity of generlization*)
       |> List.filter (fun (g : Generalize.t) -> match g.state with STABLE -> true | UNSTABLE -> Generalize.generalization_count g <= max_generalization_infer) in

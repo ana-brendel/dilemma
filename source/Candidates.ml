@@ -292,7 +292,7 @@ let prune_invalid (info : Playground.info) results : result list =
   let queries = List.filter (fun (_,e) -> not (List.is_empty e.variables)) queries' in
   let q = CoqInterface.Satisfiable (List.map snd queries) in
   let query : CoqInterface.query = { q; label = "final_validity_prune"; info} in
-  match CoqInterface.execute query with | ProvablyEquilvalentResults _ | Error _ -> raise (Failure "Unexpected query result type [in Candidates.prune_invalid]") 
+  match CoqInterface.execute query with | ReductionResults _ | ProvablyEquilvalentResults _ | Error _ -> raise (Failure "Unexpected query result type [in Candidates.prune_invalid]") 
   | Satisfiability bools -> 
     let pairup = try List.combine queries bools with _ -> raise (Failure "(1) Pairing results back with results issue [in Candidates.prune_invalid]") in
     List.iter (fun ((_,e),(ee,_)) -> if not (Constr.equal e.body ee.body) then raise (Failure "(2) Pairing results back with results issue [in Candidates.prune_invalid]")) pairup;
