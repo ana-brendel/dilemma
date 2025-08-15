@@ -18,14 +18,14 @@ let quickchick_imports = [
 let nat_typeclass_info = [
     "Derive Show for nat.";
     "Derive Arbitrary for nat."; 
-    "Instance Dec_Eq_nat : Dec_Eq nat.";
+    "Instance dilemma_Dec_Eq_nat : Dec_Eq nat.";
     "Proof. dec_eq. Qed." 
 ]
 
 let bool_typeclass_info = [
     "Derive Show for bool."; 
     "Derive Arbitrary for bool."; 
-    "Instance Dec_Eq_bool : Dec_Eq bool."; 
+    "Instance dilemma_Dec_Eq_bool : Dec_Eq bool."; 
     "Proof. dec_eq. Qed." 
 ]
 
