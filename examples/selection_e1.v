@@ -8,7 +8,7 @@ Require Import dilemma_testing.Decide.
 Require Import Coq.Lists.List.
 Require Import Coq.Sorting.Permutation. 
 
-Theorem main : forall (x y : list nat) (n m : nat), select n x = (m,y) -> length x = length y.
+Theorem selection_e1 : forall (x y : list nat) (n m : nat), select n x = (m,y) -> length x = length y.
 Proof. 
     intros. 
     dilemma.

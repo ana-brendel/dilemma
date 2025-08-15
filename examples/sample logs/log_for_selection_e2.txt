@@ -15,13 +15,13 @@ Goal: (y <= a)
 
 
 ------------------------------ GENERALIZED VARIABLES ------------------------------
-Time Elapsed From Start: 3.414 seconds
+Time Elapsed From Start: 3.779 seconds
 
 
 
 ------------------------------ GENERALIZATIONS ------------------------------
   NOTE: The assumptions have been restricted to be only the necessary assumptions.
-Time Elapsed From Start: 36.593 seconds
+Time Elapsed From Start: 41.426 seconds
 
 Label: Generalization #0
 Assumptions: 
@@ -35,7 +35,7 @@ Case: Valid and Un-Generalized
 
 
 ------------------------------ SYNTHESIS PROBLEMS ------------------------------
-Time Elapsed From Start: 36.75 seconds
+Time Elapsed From Start: 41.59 seconds
 
  -- functions to consider -- 
 @eq : (forall A : Type, A -> A -> Prop)
@@ -60,7 +60,7 @@ le_all : (nat -> list nat -> Prop)
 
 Label: 0 (0)
 Abducted Assumption: (select x al = (y, l))
-Positive Examples: 55
+Positive Examples: 53
 Negative Examples: 500
 
 Label: 1 (1)
@@ -70,7 +70,7 @@ Negative Examples: 16
 
 
 ------------------------------ TERMS CONSIDERED IN SYNTHESIS ------------------------------
-Time Elapsed From Start: 36.999 seconds
+Time Elapsed From Start: 41.864 seconds
 
 
 Label: 0 (0)
@@ -275,7 +275,7 @@ Label: 1 (1)
 
 
 ------------------------------ SYNTHESIS RESULTS ------------------------------
-Time Elapsed From Start: 44.546 seconds
+Time Elapsed From Start: 51.394 seconds
 
 
 Label: 0 (0)
@@ -306,7 +306,7 @@ Label: 1 (1)
 
 
 ------------------------------ FINAL RESULTS ------------------------------
-Time Elapsed From Start: 60.217 seconds
+Time Elapsed From Start: 69.631 seconds
 
 Number of Result Pairs Returned: 6
 

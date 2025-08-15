@@ -13,7 +13,7 @@ Require Import Coq.Sorting.Permutation.
 
 (* ################################################################# *)
 
-Lemma select_smallest: forall al bl x y, select x al = (y, bl) -> y <=* bl.
+Lemma selection_e2: forall al bl x y, select x al = (y, bl) -> y <=* bl.
 Proof. 
     intros al. induction al.
     - intros. inversion H. unfold le_all. apply Forall_nil.

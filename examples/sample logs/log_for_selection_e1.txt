@@ -11,7 +11,7 @@ Goal: (length x = length y)
 
 
 ------------------------------ GENERALIZED VARIABLES ------------------------------
-Time Elapsed From Start: 5.517 seconds
+Time Elapsed From Start: 4.597 seconds
 
 gv0 : nat = (length x)
 gv1 : nat = (length y)
@@ -19,7 +19,7 @@ gv1 : nat = (length y)
 
 ------------------------------ GENERALIZATIONS ------------------------------
   NOTE: The assumptions have been restricted to be only the necessary assumptions.
-Time Elapsed From Start: 41.074 seconds
+Time Elapsed From Start: 37.289 seconds
 
 Label: Generalization #0
 Assumptions: 
@@ -50,7 +50,7 @@ Case: Invalid and Generalized
 
 
 ------------------------------ SYNTHESIS PROBLEMS ------------------------------
-Time Elapsed From Start: 41.24 seconds
+Time Elapsed From Start: 37.436 seconds
 
  -- functions to consider -- 
 @eq : (forall A : Type, A -> A -> Prop)
@@ -76,22 +76,22 @@ sorted_bool : (list nat -> bool)
 
 Label: 0 (0)
 Abducted Assumption: (select n x = (m, y))
-Positive Examples: 30
+Positive Examples: 25
 Negative Examples: 500
 
 Label: 1 (1)
 Inferring Condition About Generalization
-Positive Examples: 42
-Negative Examples: 43
+Positive Examples: 33
+Negative Examples: 38
 
 Label: 2 (2)
 Inferring Condition About Generalization
 Positive Examples: 34
-Negative Examples: 37
+Negative Examples: 41
 
 
 ------------------------------ TERMS CONSIDERED IN SYNTHESIS ------------------------------
-Time Elapsed From Start: 41.555 seconds
+Time Elapsed From Start: 37.715 seconds
 
 
 Label: 0 (0)
@@ -362,7 +362,7 @@ Label: 2 (2)
 
 
 ------------------------------ SYNTHESIS RESULTS ------------------------------
-Time Elapsed From Start: 52.652 seconds
+Time Elapsed From Start: 48.695 seconds
 
 
 Label: 0 (0)
@@ -380,7 +380,7 @@ Label: 2 (2)
 
 
 ------------------------------ FINAL RESULTS ------------------------------
-Time Elapsed From Start: 70.441 seconds
+Time Elapsed From Start: 66.383 seconds
 
 Number of Result Pairs Returned: 3
 

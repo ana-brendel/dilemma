@@ -1,22 +1,111 @@
 # Lemma Synthesis Tactic
-This is the repo I'm working in to develop lemma synthesis tactic for Coq.
+This repo contains a _Rocq_ tactic (`dilemma`) to perform lemma synthesis, which can be invoked at any point within a _Rocq_ proof. The `dilemma` tactic was created as an implementation of the techniques presented in the follow paper: **TBD link 1**. See bottom of the README for more information pertaining to the OOPSLA submission.
 
-## Installation Instructions (as of right now...) using opam:
-
+## Installation Instructions (using opam):
+If you don't have `opam` installed, you'll need todo that first. (We've specified the versions for each installation in an attempt to minimize errors when version get updated.)
 1. `opam update`
-1. `opam switch create dilemma ocaml.5.1.1` (create new switch called lfind)
-1. `opam install dune`
-1. `opam install coq=8.20.1` (note, if you have issues with installing zarith.1.14 you can install zarith.1.13 prior)
+1. `opam switch create dilemma ocaml.5.1.1`
+1. `opam switch dilemma`
+1. `eval $(opam env)`
+1. `opam install dune=3.17.2`
+1. `opam install conf-gmp=4`
+1. `opam install zarith=1.13`
+1. `opam install coq=8.20.1`
 1. `opam repo add coq-released https://coq.inria.fr/opam/released`
 1. `opam update`
 1. `opam install coq-quickchick=2.0.5`
-1. `opam install parmap` (version 1.2.5)
-1. `opam install coq-serapi` (version 8.20.0+0.20.0)
+1. `opam install parmap=1.2.5`
+1. `opam install coq-serapi=8.20.0+0.20.0`
 1. `cd .../dilemma`
-1. `dune build && dune install` (you might want to build twice)
+1. `dune build && dune install`
+
+<details markdown="1">
+<summary>Click here to see full list of opam dependencies and their version, in the case there are version issues that occur when using the instructions above
+</summary>
+
+* base = v0.17.3
+* base-bigarray = base
+* base-domains = base
+* base-nnp = base
+* base-threads = base
+* base-unix = base
+* cmdliner = 1.3.0
+* conf-gmp = 4
+* conf-pkg-config = 4
+* coq = 8.20.1
+* coq-core = 8.20.1
+* coq-ext-lib = 0.13.0
+* coq-mathcomp-ssreflect = 1.19.0
+* coq-quickchick = 2.0.5
+* coq-serapi = 8.20.0+0.20.0
+* coq-simple-io = 1.11.0
+* coq-stdlib = 8.20.1
+* coqide-server = 8.20.1
+* cppo = 1.8.0
+* csexp = 1.5.2
+* dune = 3.19.1
+* dune-configurator = 3.19.1
+* menhir = 20240715
+* menhirCST = 20240715
+* menhirLib = 20240715
+* menhirSdk = 20240715
+* num = 1.6
+* ocaml = 5.1.1
+* ocaml-base-compiler = 5.1.1
+* ocaml-compiler-libs = v0.12.4
+* ocaml-config = 3
+* ocaml-options-vanilla = 1
+* ocaml_intrinsics_kernel = v0.17.1
+* ocamlbuild = 0.16.1
+* ocamlfind = 1.9.8
+* parmap = 1.2.5
+* parsexp = v0.17.0
+* ppx_compare = v0.17.0
+* ppx_derivers = 1.2.1
+* ppx_deriving = 6.0.3
+* ppx_deriving_yojson = 3.9.1
+* ppx_hash = v0.17.0
+* ppx_import = 1.11.0
+* ppx_sexp_conv = v0.17.0
+* ppxlib = 0.35.0
+* ppxlib_jane = v0.17.0
+* sexplib = v0.17.0
+* sexplib0 = v0.17.0
+* stdlib-shims = 0.3.0
+* yojson = 3.0.0
+* zarith = 1.13
+
+</details>
+
+## Requirements to Run
+`dilemma` uses `QuickChick` as its sampler and checker, so as long as you can invoke the `QuickChick` tactic with any proposition or type available in the file from the same location you are calling `dilemma` from, you should be good to go. Explicitly, this means that all propositions that are available in the file need to be proved decidable, and any type needs to be decidable with respect to its equality, as well as "showable" and have a generator.
+
+For inductive data types, this is can typically be done automatically using tools from the `QuickChick` library. For example, to include the definitions for `nat`:
+```
+From QuickChick Require Import QuickChick.
+...
+Derive Show for nat.
+Derive Arbitrary for nat.
+Instance Dec_Eq_nat : Dec_Eq nat.
+Proof. dec_eq. Qed.
+```
+
+Note, if the `show` function for the type uses special notation (i.e. not just the constructors), then there might be errors thrown. For example, for the `list` type you would want to define a specific `show` instance (see below) that doesn't use `[]` or `::`:
+```
+Instance show_list {T} `{_ : Show T} : Show (list T) := 
+{| show := 
+    let fix aux l :=
+      match l with
+      | nil => "nil"
+      | cons x xs => "cons (" ++ show x ++ ") (" ++ aux xs ++ ")"
+      end
+    in aux
+|}.
+```
 
 ## How to Use Tactic
-1. Make sure that you can run QuickChick for any types within your proof before the start of the current proof.
+1. After completing the installation instructions above, make sure that you can run QuickChick for any types within your proof before the start of the current proof (see requirements above for details).
+1. Import the `dilemma` tactic with the line `From Dilemma Require Import Dilemma.`. 
 1. At stuck location, use tactics `dilemma. Admitted.`
 1. Run `$ coqc your_file.v`.
 
@@ -25,7 +114,7 @@ This is the repo I'm working in to develop lemma synthesis tactic for Coq.
 1. Run in the same folder `$ make && make install`. This includes a variety of decidability proofs that are used in the test cases, as well as some definitions. They are included here to avoid overfilling the test files.
 1. Then, in the example folder run `coqc` to run that test. For example, `cd ../dilemma/examples && coqc selection_e1.v` will run the test found in that file. 
 
-The expected output (in the command line) from running `$ cd ../dilemma/examples && coqc selection_e1.v` is listed below. There will be a file called `log_for_main1.txt` that also includes results:
+The expected output (in the command line) from running `$ cd ../dilemma/examples && coqc selection_e1.v` is listed below. There will be a file called `log_for_selection_e11.txt` that also includes results:
 
 ```
 STARTING TO RUN LEMMA SYNTHESIS
@@ -142,9 +231,12 @@ Number of Result Pairs Returned (before QuickChick): 3
 Time Elapsed From Start: __ seconds
 ```
 
-_Note, underlines (`__`) are used to be place holders for values that are non-deterministic (runtime or number of examples generated). The runtime on my computer for the most recent run was about 70.4 seconds for this example (that is the whole program returned by after 70.4 seconds)._
+_Note, underlines (`__`) are used to be place holders for values that are non-deterministic (runtime or number of examples generated, etc). The runtime on my computer for the most recent run was about 70.4 seconds for this example (that is the whole program returned by after 66.4 seconds)._
 
 ## Common Issues
 - If you get a **Dynlink error** like this when calling dune build (specifically after installing libraries or calling opam update/upgrade): `File "./theories/LFindToo.v", line 1, characters 0-39:
 Error:
-Dynlink error: error loading shared library: Dynlink.Error (Dynlink.Cannot_open_dll "Failure(\"dlopen({some path}/.opam/default/lib/coq/../coq-core/../dilemma/plugin/lfindtoo.cmxs, 0x000A): symbol not found in flat namespace '_camlSerapi__Serapi_protocol.exec_cmd_5812'\")")`, then you should go the hidden `.opam` folder and delete the folder `/default/lib/dilemma`
+Dynlink error: error loading shared library: Dynlink.Error (Dynlink.Cannot_open_dll "Failure(\"dlopen({some path}/.opam/default/lib/coq/../coq-core/../dilemma/plugin/lfindtoo.cmxs, 0x000A): symbol not found in flat namespace '_camlSerapi__Serapi_protocol.exec_cmd_5812'\")")`, then you should go the hidden `.opam` folder and delete the folder `/default/lib/dilemma`. Note, in this case the switch is `default` (this is seen in the error and in the folder path you should delete) -- if you followed the instructions above and named the switch `dilemma`, you should see "dilemma" instead of "default"
+
+## OOPSLA 2025 Submission
+As mentioned above, `dilemma` was developed as an implementation of the lemma synthesis techniques described in **TBD link 1** (which appears in OOPSLA 2025). The benchmarks which we evaluated `dilemma` on can be found in the following repo: **TBD link benchmark repo**. We've isolated a branch of this repo titled `OOPSLA-2025` which reflects the version of `dilemma` which implements the techniques described in the OOPSLA 2025 paper listed above (in the case of any future updates or additions made to the tool).
