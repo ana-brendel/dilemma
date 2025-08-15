@@ -109,10 +109,12 @@ Instance show_list {T} `{_ : Show T} : Show (list T) :=
 1. At stuck location, use tactics `dilemma. Admitted.`
 1. Run `$ coqc your_file.v`.
 
+After the compilation is complete, the top 5 synthesized lemmas (or pairs of lemmas) will be printed to your terminal screen. There should also be a log which details different steps of the approach in a text file labeled `log_for_{proof name}{n}.txt` where `n` is a counter.
+
 ## How to Run Examples
 1. Run `$ cd ../dilemma/examples/common && coq_makefile -f _CoqProject -o Makefile` 
 1. Run in the same folder `$ make && make install`. This includes a variety of decidability proofs that are used in the test cases, as well as some definitions. They are included here to avoid overfilling the test files.
-1. Then, in the example folder run `coqc` to run that test. For example, `cd ../dilemma/examples && coqc selection_e1.v` will run the test found in that file. 
+1. Then, in the example folder run `coqc` to run that test. For example, `cd ../dilemma/examples && coqc selection_e1.v` will run the test found in that file. (Note, we access the `cwd` so you need to run the compilation `coqc` from the folder where the file is located.)
 
 The expected output (in the command line) from running `$ cd ../dilemma/examples && coqc selection_e1.v` is listed below. There will be a file called `log_for_selection_e11.txt` that also includes results:
 
